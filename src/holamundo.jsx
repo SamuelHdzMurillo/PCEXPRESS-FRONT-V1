@@ -1,37 +1,42 @@
 import React, { useState, useEffect } from 'react';
-import DeviceTable from './components/Table.jsx';
- // Ajusta la ruta según la ubicación de tu componente
+import TimelineModal from './components/TimeLineModal'; // Ajusta la ruta según la ubicación de tu componente
+import { Button } from '@chakra-ui/react';
 
-
-const YourPage = () => {
-  const [devices, setDevices] = useState([]);
+const DeviceDetails = () => {
+  const [device, setDevice] = useState(null);
+  const [timelineModalOpen, setTimelineModalOpen] = useState(false);
 
   useEffect(() => {
-    // Aquí deberías realizar la llamada a la API para obtener la lista de dispositivos y actualizar el estado
+    // Aquí deberías realizar la llamada a la API para obtener los detalles del dispositivo con el id especificado
     // Ejemplo ficticio
-    const fetchDevices = async () => {
-      const response = await fetch('http://127.0.0.1:8000/api/devices');
+    const fetchDeviceDetails = async () => {
+      const response = await fetch('http://127.0.0.1:8000/api/devices/1');
       const data = await response.json();
-      setDevices(data);
+      setDevice(data);
     };
-    
-    fetchDevices();
+
+    fetchDeviceDetails();
   }, []);
 
-  const handleDelete = (deviceId) => {
-    // Lógica para eliminar el dispositivo con el ID proporcionado
+  const openTimelineModal = () => {
+    setTimelineModalOpen(true);
   };
 
-  const handleEdit = (device) => {
-    // Lógica para editar el dispositivo con los datos proporcionados
+  const closeTimelineModal = () => {
+    setTimelineModalOpen(false);
   };
 
   return (
     <div>
-      <DeviceTable devices={devices} onDelete={handleDelete} onEdit={handleEdit} />
+      {/* Renderiza la información del dispositivo aquí */}
+      <Button onClick={openTimelineModal}>Ver Historial de Actualizaciones</Button>
+      <TimelineModal
+        isOpen={timelineModalOpen}
+        onClose={closeTimelineModal}
+        deviceUpdates={device ? device.updates : []}
+      />
     </div>
-    
   );
 };
 
-export default YourPage;
+export default DeviceDetails;
