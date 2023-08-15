@@ -4,12 +4,12 @@ import { ChakraProvider } from '@chakra-ui/react';
 import App from './App'
 import Hola from './holamundo.jsx'
 import Login from './login.jsx'
-import DashboardD from './DashboardDevices.jsx'
+
 import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
-import './index.css'
+import './styles/index.css'
 
 const router = createBrowserRouter([
   {
@@ -23,10 +23,6 @@ const router = createBrowserRouter([
   {
     path: "/Login",
     element: <Login></Login>,
-  },
-  {
-    path: "/Devices",
-    element: <DashboardD></DashboardD>,
   },
 ]);
 

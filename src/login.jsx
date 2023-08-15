@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, Input, Button } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
-//import logo from '../assets/logo.jpg';
+// import logo from '../assets/logo.jpg'; // Asegúrate de tener la ruta correcta de tu logo
 
 const Login = () => {
   const navigate = useNavigate();
@@ -18,7 +18,7 @@ const Login = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Accept': 'application/json',
+          Accept: 'application/json',
         },
         body: JSON.stringify(credentials),
       });
@@ -44,32 +44,26 @@ const Login = () => {
       justifyContent="center"
       alignItems="center"
       minHeight="100vh"
-      flexDirection="column" // Alineación vertical de los elementos
+      flexDirection="column"
     >
       <Box
         as="form"
         className="login"
-        width={['90%', '80%', '50%', '40%']} // Establece diferentes anchos en diferentes tamaños de pantalla
+        width={['90%', '80%', '50%', '40%']}
         bg="white"
         boxShadow="lg"
         p="4"
         rounded="md"
         onSubmit={handleLogin}
       >
-        <img
-          src='../assets/logo.jpg' // Ruta de la imagen del logo
-          alt="Logo"
-          style={{
-            width: '100px', // Ancho fijo para la imagen del logo
-            height: '100px', // Altura fija para la imagen del logo
-            margin: '2rem auto 1rem', // Espacio arriba para el logo y entre el logo y el formulario
-            display: 'block', // Asegura que la imagen se muestre como bloque para centrarla horizontalmente
-          }}
-        />
-        <Input type="text" name="email" placeholder="Email" mb="3" />
-        <Input type="password" name="password" placeholder="Password" mb="3" />
+        {/* <img src={logo} alt="Logo" style={{ width: '100px', height: '100px', margin: '2rem auto 1rem', display: 'block' }} /> */}
+        <h2>Sistema de Inventarios</h2>
+        <p>Inicia sesión en tu cuenta</p>
+
+        <Input name="email" placeholder="Email" mb="3" />
+        <Input name="password" type="password" placeholder="Contraseña" mb="3" />
         <Button type="submit" colorScheme="blue" size="md">
-          Login
+          Iniciar sesión
         </Button>
       </Box>
     </Box>

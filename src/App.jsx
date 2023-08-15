@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { VStack, Spinner, Box, SimpleGrid, Input, InputGroup, InputRightElement } from '@chakra-ui/react';
-import Card from './card.jsx';
+import Card from './components/card.jsx';
 import axios from 'axios';
-import './style.css';
+import './styles/style.css';
 
 const DeviceList = () => {
   const [showMenu, setShowMenu] = useState(false);
