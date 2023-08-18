@@ -13,7 +13,7 @@ import {
   Button,
 } from '@chakra-ui/react';
 
-const DeviceCard = ({ data }) => {
+const DeviceCard = ({ data , openTimelineModal}) => {
   return (
     
     <Card maxW='sm' m='8' mt='8'>
@@ -25,7 +25,7 @@ const DeviceCard = ({ data }) => {
             borderRadius='lg'
             objectFit='cover'
             height='200px'
-            width='100%' // Ensure the image takes full width inside the Box
+            width='100%' 
           />
         </Box>
         <Stack mt='6' spacing='5'>
@@ -42,9 +42,9 @@ const DeviceCard = ({ data }) => {
           <Button variant='solid' colorScheme='blue'>
             Ver Detalles
           </Button>
-          <Button variant='outline' colorScheme='yellow'>
-            Ver Historial
-          </Button>
+          <Button variant='outline' 
+          colorScheme='yellow' 
+          onClick={() => openTimelineModal(data)}>Ver Historial</Button>
         </ButtonGroup>
       </CardFooter>
     </Card>

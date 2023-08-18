@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { VStack, Spinner, Box, SimpleGrid, Input, InputGroup, InputRightElement } from '@chakra-ui/react';
 import Card from './components/card.jsx';
+import TimelineModal from './components/TimelineModal.jsx';
 import axios from 'axios';
 import './styles/style.css';
 
@@ -9,6 +10,28 @@ const DeviceList = () => {
   const [devices, setDevices] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
+  const [isTimelineModalOpen, setIsTimelineModalOpen] = useState(false);
+  const [selectedDeviceUpdates, setSelectedDeviceUpdates] = useState([]);
+
+ 
+  
+  const openTimelineModal = async (deviceId) => {
+    try {
+      const response = await axios.get(`http://127.0.0.1:8000/api/devices/${deviceId}`);
+      setSelectedDeviceUpdates(response.data.updates);
+      setIsTimelineModalOpen(true);
+    } catch (error) {
+      console.error('Error fetching updates:', error);
+    }
+  };
+
+  const closeTimelineModal = () => {
+    setIsTimelineModalOpen(false);
+  };
+  
+  
+  
+
 
   useEffect(() => {
     const fetchDevices = async () => {
@@ -31,7 +54,9 @@ const DeviceList = () => {
 
   const handleSearch = (event) => {
     setSearchQuery(event.target.value);
+    setSelectedDeviceUpdates([]); // Resetear las actualizaciones cuando se cambia la búsqueda
   };
+  
 
   if (loading) {
     return (
@@ -86,9 +111,18 @@ const DeviceList = () => {
 
       <SimpleGrid columns={{ sm: 1, md: 2, lg: 3 }} spacing="4" mx="8">
         {filteredDevices.map((device) => (
-          <Card key={device.id} data={device} />
+          <Card key={device.id} 
+          data={device} 
+          openTimelineModal={() => openTimelineModal(device.id)} />
+
+          
         ))}
       </SimpleGrid>
+      <TimelineModal
+        isOpen={isTimelineModalOpen}
+        onClose={closeTimelineModal}
+        deviceUpdates={selectedDeviceUpdates}
+      />
     </div>
   );
 };

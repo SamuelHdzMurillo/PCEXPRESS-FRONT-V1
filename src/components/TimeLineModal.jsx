@@ -33,16 +33,6 @@ const TimelineModal = ({ isOpen, onClose, deviceUpdates }) => {
                 <Text fontSize="sm" color="gray.500">
                   {new Date(update.created_at).toLocaleString()}
                 </Text>
-                <Box mt={2}>
-                  {update.images.map((image, index) => (
-                    <img
-                      key={index}
-                      src={`http://127.0.0.1:8000/storage/${image}`}
-                      alt={`Image ${index}`}
-                      style={{ maxWidth: '100%', marginBottom: '8px' }}
-                    />
-                  ))}
-                </Box>
               </Box>
             ))}
           </VStack>
