@@ -60,7 +60,7 @@ const DeviceList = () => {
 
   if (loading) {
     return (
-      <Box display="flex" alignItems="center" justifyContent="center" height="100vh">
+      <Box display="flex" alignItems="center" justifyContent="center" height="100vh" width="100vh">
         <Spinner size="xl" color="blue.500" />
       </Box>
     );
@@ -109,7 +109,7 @@ const DeviceList = () => {
         </InputGroup>
       </Box>
 
-      <SimpleGrid columns={{ sm: 1, md: 2, lg: 3 }} spacing="4" mx="8">
+      <SimpleGrid columns={{ sm: 1, md: 2, lg: 4 }} spacing="4" mx="8">
         {filteredDevices.map((device) => (
           <Card key={device.id} 
           data={device} 

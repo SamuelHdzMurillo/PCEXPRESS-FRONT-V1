@@ -1,38 +1,118 @@
-import React from 'react';
-import { Button, TableContainer, Table, TableCaption, Thead, Tbody, Tr, Th, Td } from '@chakra-ui/react';
+import React, { useState, useEffect } from 'react';
+import { Table, Button, Popconfirm, Space, Menu, Dropdown } from 'antd';
+import { DownOutlined } from '@ant-design/icons';
+import axios from 'axios';
 
-const DeviceTable = ({ devices, onDelete, onEdit }) => {
+const DataTable = ({ onDelete, onEdit }) => {
+  const [data, setData] = useState([]);
+  const [pagination, setPagination] = useState({
+    current: 1,
+    pageSize: 10,
+  });
+
+  useEffect(() => {
+    fetchData();
+  }, [pagination]);
+
+  const fetchData = async () => {
+    try {
+      const response = await axios.get('http://127.0.0.1:8000/api/devices', {
+        params: {
+          page: pagination.current,
+          per_page: pagination.pageSize,
+        },
+      });
+      setData(response.data);
+      setPagination({
+        ...pagination,
+        total: response.headers['x-total-count'],
+      });
+    } catch (error) {
+      console.error('Error al obtener los datos de dispositivos:', error);
+    }
+  };
+
+  const smsMenu = (record) => (
+    <Menu onClick={(e) => handleSMS(record, e.key)}>
+      <Menu.Item key="recibido">Recibido</Menu.Item>
+      <Menu.Item key="en_proceso">En proceso</Menu.Item>
+      <Menu.Item key="completado">Completado</Menu.Item>
+    </Menu>
+  );
+  
+
+  const columns = [
+    {
+      title: 'ID',
+      dataIndex: 'id',
+      key: 'id',
+    },
+    {
+      title: 'Estado',
+      dataIndex: 'state',
+      key: 'state',
+    },
+    {
+      title: 'Tipo de dispositivo',
+      dataIndex: 'device_type',
+      key: 'device_type',
+    },
+    {
+      title: 'Marca',
+      dataIndex: 'brand',
+      key: 'brand',
+    },
+    {
+      title: 'Daño',
+      dataIndex: 'damage',
+      key: 'damage',
+    },
+    {
+      title: 'Accesorios',
+      dataIndex: 'accesories',
+      key: 'accesories',
+    },
+    {
+      title: 'Acciones',
+      key: 'actions',
+      render: (_, record) => (
+        <Space size="middle">
+         
+          <Dropdown overlay={smsMenu(record)} trigger={['click']}>
+            <Button>
+              SMS <DownOutlined />
+            </Button>
+          </Dropdown>
+          <Button onClick={() => handlePrint(record)}>Imprimir</Button>
+          <Button onClick={() => handleAddUpdate(record)}>Agregar Actualización</Button>
+          <Button type="primary" onClick={() => onEdit(record)}>
+            Editar
+          </Button>
+          <Popconfirm
+            title="¿Estás seguro de eliminar este registro?"
+            onConfirm={() => onDelete(record.id)}
+            okText="Sí"
+            cancelText="No"
+          >
+            <Button type="primary" danger>Eliminar</Button>
+          </Popconfirm>
+        </Space>
+      ),
+    },
+  ];
+
+  const handleTableChange = (pagination) => {
+    setPagination(pagination);
+  };
+
   return (
-    <TableContainer>
-      <Table variant='simple'>
-        <Thead>
-          <Tr>
-            <Th>Device Type</Th>
-            <Th>Brand</Th>
-            <Th>Damage</Th>
-            <Th>Accessories</Th>
-            <Th>Technician</Th>
-            <Th>Actions</Th>
-          </Tr>
-        </Thead>
-        <Tbody>
-          {devices.map(device => (
-            <Tr key={device.id}>
-              <Td>{device.device_type}</Td>
-              <Td>{device.brand}</Td>
-              <Td>{device.damage}</Td>
-              <Td>{device.accesories}</Td>
-              <Td>{device.technican}</Td>
-              <Td>
-                <Button onClick={() => onEdit(device)}>Edit</Button>
-                <Button onClick={() => onDelete(device.id)}>Delete</Button>
-              </Td>
-            </Tr>
-          ))}
-        </Tbody>
-      </Table>
-    </TableContainer>
+    <Table
+      dataSource={data}
+      columns={columns}
+      pagination={pagination}
+      onChange={handleTableChange}
+    />
   );
 };
 
-export default DeviceTable;
+export default DataTable;

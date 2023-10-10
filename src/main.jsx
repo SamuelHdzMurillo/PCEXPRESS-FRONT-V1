@@ -4,6 +4,8 @@ import { ChakraProvider } from '@chakra-ui/react';
 import App from './App'
 import Hola from './holamundo.jsx'
 import Login from './login.jsx'
+import Index from './index.jsx'
+import Pruebas from './pruebas.jsx'
 
 import {
   createBrowserRouter,
@@ -23,6 +25,14 @@ const router = createBrowserRouter([
   {
     path: "/Login",
     element: <Login></Login>,
+  },
+  {
+    path: "/adminDevices",
+    element: <Index></Index>,
+  },
+  {
+    path: "/prueba",
+    element: <Pruebas></Pruebas>,
   },
 ]);
 
