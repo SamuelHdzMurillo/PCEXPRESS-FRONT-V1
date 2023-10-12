@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { VStack, Spinner, Box, SimpleGrid, Input, InputGroup, InputRightElement } from '@chakra-ui/react';
 import Card from './components/card.jsx';
 import TimelineModal from './components/TimelineModal.jsx';
+import DeviceInfo from './components/DeviceInfo.jsx';
 import axios from 'axios';
 import './styles/style.css';
 
@@ -12,6 +13,17 @@ const DeviceList = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [isTimelineModalOpen, setIsTimelineModalOpen] = useState(false);
   const [selectedDeviceUpdates, setSelectedDeviceUpdates] = useState([]);
+  const [isDeviceModalOpen, setIsDeviceModalOpen] = useState(false);
+const [selectedDeviceId, setSelectedDeviceId] = useState(null);
+
+const openDeviceModal = (deviceId) => {
+  setSelectedDeviceId(deviceId);
+  setIsDeviceModalOpen(true);
+};
+
+const closeDeviceModal = () => {
+  setIsDeviceModalOpen(false);
+};
 
  
   
@@ -113,7 +125,8 @@ const DeviceList = () => {
         {filteredDevices.map((device) => (
           <Card key={device.id} 
           data={device} 
-          openTimelineModal={() => openTimelineModal(device.id)} />
+          openTimelineModal={() => openTimelineModal(device.id)} 
+          openDeviceModal={() => openDeviceModal(device.id)}/>
 
           
         ))}
@@ -123,6 +136,11 @@ const DeviceList = () => {
         onClose={closeTimelineModal}
         deviceUpdates={selectedDeviceUpdates}
       />
+      <DeviceInfo
+  isOpen={isDeviceModalOpen}
+  onClose={closeDeviceModal}
+  deviceId={selectedDeviceId}
+/>
     </div>
   );
 };

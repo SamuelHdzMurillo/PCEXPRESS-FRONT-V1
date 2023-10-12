@@ -13,7 +13,13 @@ import {
   Button,
 } from '@chakra-ui/react';
 
-const DeviceCard = ({ data , openTimelineModal}) => {
+const handleDetailsClick = () => {
+  // Llama a una función para abrir el modal aquí
+  openDeviceModal(data.id); // Suponiendo que `openDeviceModal` proviene de `DeviceList`
+};
+
+
+const DeviceCard = ({ data , openTimelineModal,openDeviceModal}) => {
   return (
     
     <Card maxW='sm' m='8' mt='8'>
@@ -39,9 +45,9 @@ const DeviceCard = ({ data , openTimelineModal}) => {
       <Divider />
       <CardFooter>
         <ButtonGroup spacing='55'justifyContent='center' overflowX='auto'>
-          <Button variant='solid' colorScheme='blue'>
-            Ver Detalles
-          </Button>
+        <Button variant='solid' colorScheme='blue' onClick={() => openDeviceModal(data.id)}>
+  Ver Detalles
+</Button>
           <Button variant='outline' 
           colorScheme='yellow' 
           onClick={() => openTimelineModal(data)}>Ver Historial</Button>
