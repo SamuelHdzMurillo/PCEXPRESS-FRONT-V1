@@ -22,7 +22,7 @@ const handleDetailsClick = () => {
 const DeviceCard = ({ data , openTimelineModal,openDeviceModal}) => {
   return (
     
-    <Card maxW='sm' m='8' mt='8'>
+    <Card maxW='sm' m='5' mt='5'>
       <CardBody>
         <Box display='flex' justifyContent='center'>
           <Image
@@ -34,8 +34,10 @@ const DeviceCard = ({ data , openTimelineModal,openDeviceModal}) => {
             width='100%' 
           />
         </Box>
-        <Stack mt='6' spacing='5'>
+        <Stack mt='5' spacing='5'>
           <Heading size='md'>{data.brand}</Heading>
+          <Heading size='sm'>Orden: {data.id}</Heading>
+          <Text size='sm'>{data.owner.name}</Text>
           <Text>{data.damage}</Text>
           <Text color='blue.600' fontSize='2xl'>
             {data.state === 'Active' ? 'Active' : 'Inactive'}
@@ -44,10 +46,8 @@ const DeviceCard = ({ data , openTimelineModal,openDeviceModal}) => {
       </CardBody>
       <Divider />
       <CardFooter>
-        <ButtonGroup spacing='55'justifyContent='center' overflowX='auto'>
-        <Button variant='solid' colorScheme='blue' onClick={() => openDeviceModal(data.id)}>
-  Ver Detalles
-</Button>
+        <ButtonGroup spacing='50'justifyContent='center' overflowX='auto'>
+        <Button variant='solid' colorScheme='blue' onClick={() => openDeviceModal(data.id)}>Ver Detalles</Button>
           <Button variant='outline' 
           colorScheme='yellow' 
           onClick={() => openTimelineModal(data)}>Ver Historial</Button>

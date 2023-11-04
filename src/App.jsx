@@ -29,7 +29,7 @@ const closeDeviceModal = () => {
   
   const openTimelineModal = async (deviceId) => {
     try {
-      const response = await axios.get(`http://127.0.0.1:8000/api/devices/${deviceId}`);
+      const response = await axios.get(`http://143.198.148.125/api/devices/${deviceId}`);
       setSelectedDeviceUpdates(response.data.updates);
       setIsTimelineModalOpen(true);
     } catch (error) {
@@ -48,7 +48,7 @@ const closeDeviceModal = () => {
   useEffect(() => {
     const fetchDevices = async () => {
       try {
-        const response = await axios.get('http://127.0.0.1:8000/api/devices');
+        const response = await axios.get('http://143.198.148.125/api/devices');
         setDevices(response.data);
         setLoading(false);
       } catch (error) {
@@ -87,7 +87,9 @@ const closeDeviceModal = () => {
       device.state.toLowerCase().includes(lowerCaseQuery) ||
       device.device_type.toLowerCase().includes(lowerCaseQuery) ||
       device.accesories.toLowerCase().includes(lowerCaseQuery) ||
-      device.technican.toLowerCase().includes(lowerCaseQuery)
+      device.technican.toLowerCase().includes(lowerCaseQuery) ||
+      device.id.toString().includes(lowerCaseQuery)||
+      device.owner.toString().includes(lowerCaseQuery)
     );
   });
 
@@ -121,7 +123,7 @@ const closeDeviceModal = () => {
         </InputGroup>
       </Box>
 
-      <SimpleGrid columns={{ sm: 1, md: 2, lg: 4 }} spacing="4" mx="8">
+      <SimpleGrid columns={{ sm: 1, md: 3, lg: 4 }} spacing="4" mx="8">
         {filteredDevices.map((device) => (
           <Card key={device.id} 
           data={device} 

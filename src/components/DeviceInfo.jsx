@@ -21,7 +21,7 @@ const DeviceModal = ({ isOpen, onClose, deviceId }) => {
   const fetchData = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(`http://127.0.0.1:8000/api/devices/${deviceId}`);
+      const response = await axios.get(`http://143.198.148.125/api/devices/${deviceId}`);
       setDeviceData(response.data);
     } catch (error) {
       console.error('Error al obtener los datos del dispositivo:', error);

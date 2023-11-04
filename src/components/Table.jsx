@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Button, Popconfirm, Space, Menu, Dropdown } from 'antd';
+import { Table, Button, Popconfirm, Space, Menu, Dropdown, Input } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 import axios from 'axios';
 
 const DataTable = ({ onDelete, onEdit }) => {
+  const { Search } = Input;
   const [data, setData] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
+
   const [pagination, setPagination] = useState({
     current: 1,
     pageSize: 10,
@@ -16,7 +19,7 @@ const DataTable = ({ onDelete, onEdit }) => {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get('http://127.0.0.1:8000/api/devices', {
+      const response = await axios.get('http://143.198.148.125/api/devices', {
         params: {
           page: pagination.current,
           per_page: pagination.pageSize,
@@ -39,9 +42,16 @@ const DataTable = ({ onDelete, onEdit }) => {
       <Menu.Item key="completado">Completado</Menu.Item>
     </Menu>
   );
-  
 
   const columns = [
+    {
+      title: 'Cliente',
+      dataIndex: 'owner.name',
+      key: 'name',
+    render: (text, record) => (
+      <span>{record.owner.name}</span>
+    )
+    },
     {
       title: 'ID',
       dataIndex: 'id',
@@ -77,7 +87,6 @@ const DataTable = ({ onDelete, onEdit }) => {
       key: 'actions',
       render: (_, record) => (
         <Space size="middle">
-         
           <Dropdown overlay={smsMenu(record)} trigger={['click']}>
             <Button>
               SMS <DownOutlined />
@@ -105,13 +114,34 @@ const DataTable = ({ onDelete, onEdit }) => {
     setPagination(pagination);
   };
 
+  const handleSearch = (value) => {
+    setSearchQuery(value);
+  };
+
+  const filteredData = data.filter((item) => {
+    // Filtra en base a la búsqueda en todas las propiedades del objeto
+    return Object.values(item).some((property) => {
+      if (typeof property === 'string') {
+        return property.toLowerCase().includes(searchQuery.toLowerCase());
+      }
+      return false;
+    });
+  });
+
   return (
-    <Table
-      dataSource={data}
-      columns={columns}
-      pagination={pagination}
-      onChange={handleTableChange}
-    />
+    <div>
+      <Search
+        placeholder="Buscar en la tabla"
+        onSearch={handleSearch}
+        style={{ width: 200, marginBottom: 16 }}
+      />
+      <Table
+        dataSource={filteredData}
+        columns={columns}
+        pagination={pagination}
+        onChange={handleTableChange}
+      />
+    </div>
   );
 };
 

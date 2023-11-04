@@ -15,12 +15,12 @@ const App = () => {
   };
 
   return (
-    <div className="App">
+    
       <Dashboard>
         {/* Incrusta tu componente DataTable dentro de Dashboard */}
         <DataTable onDelete={handleDelete} onEdit={handleEdit} />
       </Dashboard>
-    </div>
+    
   );
 };
 

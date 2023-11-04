@@ -1,20 +1,15 @@
 import React from 'react';
-import { Card } from 'antd';
-import LoginForm from './components/Login.jsx'; // Asegúrate de ajustar la ruta correcta
+import { ChakraProvider } from '@chakra-ui/react';
+import Login from './components/Login.jsx'; // Asegúrate de importar el componente desde la ubicación correcta
 
-const Login = () => {
-  const onFinish = (values) => {
-    console.log('Valores del formulario:', values);
-    // Agrega aquí la lógica para procesar el inicio de sesión.
-  };
-
+function App() {
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh' }}>
-      <Card title="Inicio de Sesión" style={{ width: '100%', maxWidth: '400px' }}>
-        <LoginForm onFinish={onFinish} />
-      </Card>
-    </div>
+    <ChakraProvider>
+      <div className="App">
+        <Login />
+      </div>
+    </ChakraProvider>
   );
-};
+}
 
-export default Login;
+export default App;
