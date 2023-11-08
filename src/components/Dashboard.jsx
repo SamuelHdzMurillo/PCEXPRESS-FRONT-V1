@@ -1,8 +1,5 @@
 import React, { useState } from 'react';
 import {
-  MenuFoldOutlined,
-  MenuUnfoldOutlined,
-  UploadOutlined,
   UserOutlined,
   ToolOutlined ,
   HomeOutlined
@@ -28,7 +25,7 @@ const handleEdit = (record) => {
 };
 const { Sider, Content } = Layout;
 const App = () => {
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(true);
   const {
     token: { colorBgContainer },
   } = theme.useToken();

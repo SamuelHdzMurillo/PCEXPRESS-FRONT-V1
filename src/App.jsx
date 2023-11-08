@@ -103,7 +103,7 @@ const closeDeviceModal = () => {
           <span></span>
         </button>
         <ul className={`nav-links ${showMenu ? 'show' : ''}`}>
-          <li><a href="#servicios">Servicios</a></li>
+          <li><a href="http://www.pcexpressbcs.com.mx/">Servicios</a></li>
           <li><a href="https://www.facebook.com/profile.php?id=100076056407761">Contacto</a></li>
           <li><a href="/Login"><button className="btn-iniciar-sesion">Iniciar Sesión</button></a></li>
         </ul>
