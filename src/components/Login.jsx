@@ -1,7 +1,16 @@
-import React, { useState } from 'react';
-import { ChakraProvider, Button, FormControl, FormLabel, Heading, Input, Stack, Image } from '@chakra-ui/react';
-import { Flex } from '@chakra-ui/layout';
-import axios from 'axios';
+import React, { useState } from "react";
+import {
+  ChakraProvider,
+  Button,
+  FormControl,
+  FormLabel,
+  Heading,
+  Input,
+  Stack,
+  Image,
+} from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/layout";
+import axios from "axios";
 
 // Importa componentes de alerta de Chakra UI
 import {
@@ -10,11 +19,11 @@ import {
   AlertTitle,
   AlertDescription,
   CloseButton,
-} from '@chakra-ui/react';
+} from "@chakra-ui/react";
 
 export default function UseClient() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [showErrorAlert, setShowErrorAlert] = useState(false);
 
   const handleLogin = () => {
@@ -25,21 +34,25 @@ export default function UseClient() {
     };
 
     // URL de la API de inicio de sesión
-    const loginUrl = 'http://143.198.148.125/api/login';
+    const loginUrl = "http://143.198.148.125/api/login";
 
     // Realizar la solicitud de inicio de sesión
     axios
       .post(loginUrl, userData)
       .then((response) => {
         // La solicitud de inicio de sesión se completó exitosamente
-        console.log('Inicio de sesión exitoso');
-        console.log('Datos del usuario:', response.data);
+        console.log("Inicio de sesión exitoso");
+        console.log("Datos del usuario:", response.data);
+
+        // Guardar la información del usuario en el localStorage
+        localStorage.setItem("userData", JSON.stringify(response.data));
+
         // Redirige a otra página después del inicio de sesión exitoso
-        window.location.href = '/adminDevices';
+        window.location.href = "/adminDevices";
       })
       .catch((error) => {
         // Se produjo un error durante la solicitud de inicio de sesión
-        console.error('Error de inicio de sesión:', error);
+        console.error("Error de inicio de sesión:", error);
         // Muestra la alerta de error
         setShowErrorAlert(true);
       });
@@ -52,20 +65,32 @@ export default function UseClient() {
 
   return (
     <ChakraProvider>
-      <Stack minH={'100vh'} direction={{ base: 'column', md: 'row' }}>
-        <Flex p={8} flex={1} align={'center'} justify={'center'}>
-          <Stack spacing={4} w={'full'} maxW={'md'}>
-            <Heading fontSize={'2xl'}>Iniciar Sesión</Heading>
+      <Stack minH={"100vh"} direction={{ base: "column", md: "row" }}>
+        <Flex p={8} flex={1} align={"center"} justify={"center"}>
+          <Stack spacing={4} w={"full"} maxW={"md"}>
+            <Heading fontSize={"2xl"}>Iniciar Sesión</Heading>
             <FormControl id="email">
               <FormLabel>Correo electrónico</FormLabel>
-              <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+              <Input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
             </FormControl>
             <FormControl id="password">
               <FormLabel>Contraseña</FormLabel>
-              <Input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+              <Input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
             </FormControl>
             <Stack spacing={6}>
-              <Button colorScheme={'blue'} variant={'solid'} onClick={handleLogin}>
+              <Button
+                colorScheme={"blue"}
+                variant={"solid"}
+                onClick={handleLogin}
+              >
                 Entrar
               </Button>
             </Stack>
@@ -73,10 +98,10 @@ export default function UseClient() {
         </Flex>
         <Flex flex={1}>
           <Image
-            alt={'Login Image'}
-            objectFit={'cover'}
+            alt={"Login Image"}
+            objectFit={"cover"}
             src={
-              'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1352&q=80'
+              "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1352&q=80"
             }
           />
         </Flex>
@@ -92,11 +117,19 @@ export default function UseClient() {
           justifyContent="center"
           zIndex="9999"
         >
-          <Alert status='error' variant="subtle" flexDirection="column" textAlign="center" width="100%" maxW="400px">
+          <Alert
+            status="error"
+            variant="subtle"
+            flexDirection="column"
+            textAlign="center"
+            width="100%"
+            maxW="400px"
+          >
             <AlertIcon boxSize="40px" mx="auto" mb={4} />
             <AlertTitle>Error de inicio de sesión</AlertTitle>
             <AlertDescription>
-              El correo electrónico o la contraseña son incorrectos. Por favor, inténtalo de nuevo.
+              El correo electrónico o la contraseña son incorrectos. Por favor,
+              inténtalo de nuevo.
             </AlertDescription>
             <CloseButton mt={4} onClick={closeErrorAlert} />
           </Alert>

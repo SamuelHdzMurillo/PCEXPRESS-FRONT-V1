@@ -1,112 +1,115 @@
-import React, { useState } from 'react';
-import {
-  Button,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
-  Input,
-  FormControl,
-  FormLabel,
-  Alert,
-  AlertIcon,
-} from '@chakra-ui/react';
+import React from "react";
+import { Modal, Form, Input, Select, Button } from "antd";
+import axios from "axios";
 
-const OwnerModal = ({ isOpen, onClose, onSubmit }) => {
-  const [name, setName] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [email, setEmail] = useState('');
-  const [error, setError] = useState(null);
+const { Option } = Select;
 
-  const handleSubmission = () => {
-    // Validar que el nombre no contenga números
-    if (/\d/.test(name)) {
-      setError('El nombre no puede contener números.');
-      return;
+const OwnerForm = ({ isModalVisible, setIsModalVisible }) => {
+  const [form] = Form.useForm();
+
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
+
+  const sendOwnerData = (values) => {
+    const formData = new FormData();
+    formData.append("name", values.name);
+    formData.append("email", values.email);
+    formData.append("phone_number", values.phone_number);
+
+    return formData;
+  };
+
+  const onFinish = async (values) => {
+    const formData = sendOwnerData(values);
+
+    try {
+      const response = await axios.post(
+        "http://143.198.148.125/api/owners",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      console.log("Respuesta del servidor:", response.data);
+      setIsModalVisible(false);
+    } catch (error) {
+      console.error("Error al enviar los datos:", error);
     }
-
-    // Validar que el número de teléfono no contenga letras
-    if (/[a-zA-Z]/.test(phoneNumber)) {
-      setError('El número de teléfono no puede contener letras.');
-      return;
-    }
-
-    // Validar que el correo sea un correo electrónico válido
-    if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email)) {
-      setError('El correo no es válido.');
-      return;
-    }
-
-    // Si todas las validaciones pasan, limpiar cualquier mensaje de error previo
-    setError(null);
-
-    const formData = {
-      name,
-      phone_number: phoneNumber,
-      email,
-    };
-
-    onSubmit(formData);
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} size="xl">
-      <ModalOverlay />
-      <ModalContent>
-        <ModalHeader>Agregar Propietario</ModalHeader>
-        <ModalCloseButton />
-        <ModalBody>
-          {/* Mostrar mensaje de error en el modal si existe */}
-          {error && (
-            <Alert status="error" mb={4}>
-              <AlertIcon />
-              {error}
-            </Alert>
-          )}
+    <div>
+      <Button type="primary" onClick={showModal}>
+        Abrir Modal
+      </Button>
+      <Modal
+        title="Formulario"
+        visible={isModalVisible}
+        onCancel={handleCancel}
+        footer={null}
+      >
+        <Form form={form} name="basic" onFinish={onFinish}>
+          <Form.Item
+            label="Nombre"
+            name="name"
+            rules={[
+              { required: true, message: "Por favor ingresa un nombre." },
+            ]}
+          >
+            <Input />
+          </Form.Item>
 
-          <FormControl>
-            <FormLabel>Nombre</FormLabel>
-            <Input
-              placeholder="Nombre"
-              onChange={(e) => setName(e.target.value)}
-              value={name}
-              isInvalid={/\d/.test(name)}
-            />
-          </FormControl>
-          <FormControl>
-            <FormLabel>Número de Teléfono</FormLabel>
-            <Input
-              placeholder="Número de Teléfono"
-              onChange={(e) => setPhoneNumber(e.target.value)}
-              value={phoneNumber}
-              isInvalid={/[a-zA-Z]/.test(phoneNumber)}
-            />
-          </FormControl>
-          <FormControl>
-            <FormLabel>Correo Electrónico</FormLabel>
-            <Input
-              placeholder="Correo Electrónico"
-              onChange={(e) => setEmail(e.target.value)}
-              value={email}
-              isInvalid={!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email)}
-            />
-          </FormControl>
-        </ModalBody>
+          <Form.Item
+            label="Teléfono"
+            name="phone_number"
+            rules={[
+              {
+                required: true,
+                message: "Por favor ingresa un número de teléfono.",
+              },
+              {
+                pattern: /^(\+)?[0-9]+$/, // Permite un signo '+' al principio
+                message: "Ingresa un número de teléfono válido.",
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
 
-        <ModalFooter>
-          <Button colorScheme="blue" mr={3} onClick={handleSubmission}>
-            Guardar
-          </Button>
-          <Button variant="ghost" onClick={onClose}>
-            Cancelar
-          </Button>
-        </ModalFooter>
-      </ModalContent>
-    </Modal>
+          <Form.Item
+            label="Correo Electrónico"
+            name="email"
+            rules={[
+              {
+                required: true,
+                message: "Por favor ingresa un correo electrónico.",
+              },
+              {
+                type: "email",
+                message: "Ingresa un correo electrónico válido.",
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+
+          <Form.Item>
+            <Button type="primary" htmlType="submit">
+              Enviar
+            </Button>
+          </Form.Item>
+        </Form>
+      </Modal>
+    </div>
   );
 };
 
-export default OwnerModal;
+export default OwnerForm;

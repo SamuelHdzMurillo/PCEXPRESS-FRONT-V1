@@ -1,58 +1,62 @@
-import React, { useState, useEffect } from 'react';
-import { VStack, Spinner, Box, SimpleGrid, Input, InputGroup, InputRightElement } from '@chakra-ui/react';
-import Card from './components/card.jsx';
-import TimelineModal from './components/TimelineModal.jsx';
-import DeviceInfo from './components/DeviceInfo.jsx';
-import axios from 'axios';
-import './styles/style.css';
+import React, { useState, useEffect } from "react";
+import {
+  VStack,
+  Spinner,
+  Box,
+  SimpleGrid,
+  Input,
+  InputGroup,
+  InputRightElement,
+} from "@chakra-ui/react";
+import Card from "./components/card.jsx";
+import TimelineModal from "./components/TimelineModal.jsx";
+import DeviceInfo from "./components/DeviceInfo.jsx";
+import axios from "axios";
+import "./styles/style.css";
 
 const DeviceList = () => {
   const [showMenu, setShowMenu] = useState(false);
   const [devices, setDevices] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
   const [isTimelineModalOpen, setIsTimelineModalOpen] = useState(false);
   const [selectedDeviceUpdates, setSelectedDeviceUpdates] = useState([]);
   const [isDeviceModalOpen, setIsDeviceModalOpen] = useState(false);
-const [selectedDeviceId, setSelectedDeviceId] = useState(null);
+  const [selectedDeviceId, setSelectedDeviceId] = useState(null);
 
-const openDeviceModal = (deviceId) => {
-  setSelectedDeviceId(deviceId);
-  setIsDeviceModalOpen(true);
-};
+  const openDeviceModal = (deviceId) => {
+    setSelectedDeviceId(deviceId);
+    setIsDeviceModalOpen(true);
+  };
 
-const closeDeviceModal = () => {
-  setIsDeviceModalOpen(false);
-};
+  const closeDeviceModal = () => {
+    setIsDeviceModalOpen(false);
+  };
 
- 
-  
   const openTimelineModal = async (deviceId) => {
     try {
-      const response = await axios.get(`http://143.198.148.125/api/devices/${deviceId}`);
+      const response = await axios.get(
+        `http://143.198.148.125/api/devices/${deviceId}`
+      );
       setSelectedDeviceUpdates(response.data.updates);
       setIsTimelineModalOpen(true);
     } catch (error) {
-      console.error('Error fetching updates:', error);
+      console.error("Error fetching updates:", error);
     }
   };
 
   const closeTimelineModal = () => {
     setIsTimelineModalOpen(false);
   };
-  
-  
-  
-
 
   useEffect(() => {
     const fetchDevices = async () => {
       try {
-        const response = await axios.get('http://143.198.148.125/api/devices');
+        const response = await axios.get("http://143.198.148.125/api/devices");
         setDevices(response.data);
         setLoading(false);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error("Error fetching data:", error);
         setLoading(false);
       }
     };
@@ -68,11 +72,16 @@ const closeDeviceModal = () => {
     setSearchQuery(event.target.value);
     setSelectedDeviceUpdates([]); // Resetear las actualizaciones cuando se cambia la búsqueda
   };
-  
 
   if (loading) {
     return (
-      <Box display="flex" alignItems="center" justifyContent="center" height="100vh" width="100vh">
+      <Box
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+        height="100vh"
+        width="100vh"
+      >
         <Spinner size="xl" color="blue.500" />
       </Box>
     );
@@ -88,7 +97,7 @@ const closeDeviceModal = () => {
       device.device_type.toLowerCase().includes(lowerCaseQuery) ||
       device.accesories.toLowerCase().includes(lowerCaseQuery) ||
       device.technican.toLowerCase().includes(lowerCaseQuery) ||
-      device.id.toString().includes(lowerCaseQuery)||
+      device.id.toString().includes(lowerCaseQuery) ||
       device.owner.toString().includes(lowerCaseQuery)
     );
   });
@@ -102,10 +111,20 @@ const closeDeviceModal = () => {
           <span></span>
           <span></span>
         </button>
-        <ul className={`nav-links ${showMenu ? 'show' : ''}`}>
-          <li><a href="http://www.pcexpressbcs.com.mx/">Servicios</a></li>
-          <li><a href="https://www.facebook.com/profile.php?id=100076056407761">Contacto</a></li>
-          <li><a href="/Login"><button className="btn-iniciar-sesion">Iniciar Sesión</button></a></li>
+        <ul className={`nav-links ${showMenu ? "show" : ""}`}>
+          <li>
+            <a href="http://www.pcexpressbcs.com.mx/">Servicios</a>
+          </li>
+          <li>
+            <a href="https://www.facebook.com/profile.php?id=100076056407761">
+              Contacto
+            </a>
+          </li>
+          <li>
+            <a href="/Login">
+              <button className="btn-iniciar-sesion">Iniciar Sesión</button>
+            </a>
+          </li>
         </ul>
       </div>
 
@@ -125,12 +144,12 @@ const closeDeviceModal = () => {
 
       <SimpleGrid columns={{ sm: 1, md: 3, lg: 4 }} spacing="4" mx="8">
         {filteredDevices.map((device) => (
-          <Card key={device.id} 
-          data={device} 
-          openTimelineModal={() => openTimelineModal(device.id)} 
-          openDeviceModal={() => openDeviceModal(device.id)}/>
-
-          
+          <Card
+            key={device.id}
+            data={device}
+            openTimelineModal={() => openTimelineModal(device.id)}
+            openDeviceModal={() => openDeviceModal(device.id)}
+          />
         ))}
       </SimpleGrid>
       <TimelineModal
@@ -139,10 +158,10 @@ const closeDeviceModal = () => {
         deviceUpdates={selectedDeviceUpdates}
       />
       <DeviceInfo
-  isOpen={isDeviceModalOpen}
-  onClose={closeDeviceModal}
-  deviceId={selectedDeviceId}
-/>
+        isOpen={isDeviceModalOpen}
+        onClose={closeDeviceModal}
+        deviceId={selectedDeviceId}
+      />
     </div>
   );
 };

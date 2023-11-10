@@ -4,17 +4,18 @@ import {
   Button,
   Popconfirm,
   Space,
-  Menu,
   Dropdown,
   Input,
   Tooltip,
   Modal,
+  Menu,
 } from "antd";
 import {
   PlusCircleFilled,
   PrinterFilled,
   DeleteFilled,
   EditFilled,
+  MessageFilled,
 } from "@ant-design/icons";
 import DeviceForm from "./DeviceForm";
 import axios from "axios";
@@ -23,7 +24,7 @@ const DataTable = ({ onDelete, onEdit }) => {
   const { Search } = Input;
   const [data, setData] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const [isModalVisible, setIsModalVisible] = useState(false); // Agrega el estado para el modal
+  const [isModalVisible, setIsModalVisible] = useState(false);
   const [isFormVisible, setIsFormVisible] = useState(false);
 
   const openForm = () => {
@@ -60,32 +61,56 @@ const DataTable = ({ onDelete, onEdit }) => {
         },
       });
       setData(response.data);
-      /* setPagination({
-        ...pagination,
-      }); 
-        
-          //en caso de usar lo de los mensajes
-          <Dropdown overlay={smsMenu(record)} trigger={['click']}>
-            <Button>
-              SMS <DownOutlined />
-            </Button>
-          </Dropdown>
-
-      */
     } catch (error) {
       console.error("Error al obtener los datos de dispositivos:", error);
     }
   };
 
   const smsMenu = (record) => (
-    <Menu onClick={(e) => handleSMS(record, e.key)}>
-      <Menu.Item key="recibido">Recibido</Menu.Item>
-      <Menu.Item key="en_proceso">En proceso</Menu.Item>
-      <Menu.Item key="completado">Completado</Menu.Item>
+    <Menu>
+      <Menu.Item key="en_proceso">
+        <a onClick={() => handleStatusChange(record.id, "in-progress")}>
+          En proceso
+        </a>
+      </Menu.Item>
+      <Menu.Item key="recibido">
+        <a onClick={() => handleStatusChange(record.id, "received")}>
+          Recibido
+        </a>
+      </Menu.Item>
+      <Menu.Item key="terminado">
+        <a onClick={() => handleStatusChange(record.id, "completed")}>
+          Terminado
+        </a>
+      </Menu.Item>
     </Menu>
   );
+  const handleStatusChange = async (deviceId, status) => {
+    try {
+      // Define la URL según el estado seleccionado
+      const url = `http://143.198.148.125/api/devices/${deviceId}/${status}`;
+
+      // Realiza la solicitud HTTP
+      const response = await axios.get(url);
+
+      if (response.status === 200) {
+        // Actualiza la lista de dispositivos después de cambiar el estado
+        fetchData();
+      } else {
+        console.error("Error al cambiar el estado del dispositivo");
+      }
+    } catch (error) {
+      console.error("Error al cambiar el estado del dispositivo:", error);
+    }
+  };
 
   const columns = [
+    {
+      title: "Orden",
+      dataIndex: "id",
+      key: "name",
+      render: (text, record) => <span>{record.id}</span>,
+    },
     {
       title: "Cliente",
       dataIndex: "owner.name",
@@ -130,8 +155,11 @@ const DataTable = ({ onDelete, onEdit }) => {
           <Button
             icon={<PrinterFilled />}
             onClick={() => handlePrint(record)}
-          ></Button>
+          />
 
+          <Dropdown overlay={smsMenu(record)}>
+            <Button icon={<MessageFilled />}></Button>
+          </Dropdown>
           <Tooltip title="Agregar Actualizacion">
             <Button
               style={{
@@ -141,24 +169,22 @@ const DataTable = ({ onDelete, onEdit }) => {
               }}
               icon={<PlusCircleFilled />}
               onClick={() => handleAddUpdate(record)}
-            ></Button>
+            />
           </Tooltip>
-
           <Tooltip title="Editar">
             <Button
               icon={<EditFilled />}
               type="primary"
               onClick={() => onEdit(record)}
-            ></Button>
+            />
           </Tooltip>
-
           <Popconfirm
             title="¿Estás seguro de eliminar este registro?"
             onConfirm={() => onDelete(record.id)}
             okText="Sí"
             cancelText="No"
           >
-            <Button icon={<DeleteFilled />} type="primary" danger></Button>
+            <Button icon={<DeleteFilled />} type="primary" danger />
           </Popconfirm>
         </Space>
       ),

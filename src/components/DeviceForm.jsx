@@ -7,9 +7,11 @@ const DeviceForm = ({ onClose }) => {
   const [form] = Form.useForm();
   const [isModalVisible, setIsModalVisible] = useState(true);
   const [owners, setOwners] = useState([]);
+  const [technicians, setTechnicians] = useState([]);
   const [formLayout, setFormLayout] = useState("vertical");
 
   useEffect(() => {
+    // Obtener la lista de propietarios
     axios
       .get("http://143.198.148.125/api/catalog/owners")
       .then((response) => {
@@ -17,6 +19,16 @@ const DeviceForm = ({ onClose }) => {
       })
       .catch((error) => {
         console.error("Error al obtener la lista de propietarios", error);
+      });
+
+    // Obtener la lista de técnicos
+    axios
+      .get("http://143.198.148.125/api/catalog/users")
+      .then((response) => {
+        setTechnicians(response.data.data);
+      })
+      .catch((error) => {
+        console.error("Error al obtener la lista de técnicos", error);
       });
   }, []);
 
@@ -77,12 +89,7 @@ const DeviceForm = ({ onClose }) => {
   };
 
   return (
-    <Modal
-      title="Agregar Dispositivo"
-      visible={isModalVisible}
-      onCancel={handleCancel}
-      footer={null}
-    >
+    <Modal visible={isModalVisible} onCancel={handleCancel} footer={null}>
       <Form
         form={form}
         layout={formLayout}
@@ -93,9 +100,7 @@ const DeviceForm = ({ onClose }) => {
           setFormLayout(layout);
         }}
       >
-        <Button type="primary" onClick={showModal}>
-          Agregar Dispositivo
-        </Button>
+        <Button onClick={showModal}></Button>
         <Modal
           title="Agregar Dispositivo"
           visible={isModalVisible}
@@ -159,10 +164,16 @@ const DeviceForm = ({ onClose }) => {
             label="Técnico"
             name="technican"
             rules={[
-              { required: true, message: "Por favor ingrese el tecnico" },
+              { required: true, message: "Por favor seleccione el técnico" },
             ]}
           >
-            <Input />
+            <Select>
+              {technicians.map((technician) => (
+                <Select.Option key={technician.id} value={technician.name}>
+                  {technician.name}
+                </Select.Option>
+              ))}
+            </Select>
           </Form.Item>
 
           <Form.Item

@@ -1,80 +1,79 @@
-import React, { useState } from 'react';
-import {
-  UserOutlined,
-  ToolOutlined ,
-  HomeOutlined
-} from '@ant-design/icons';
-import { Layout, Menu, Button, theme ,Breadcrumb, Divider } from 'antd';
-import { Heading }  from '@chakra-ui/react';
-import DataTable from './Table.jsx';
-
-const handleDelete = (id) => {
-  // Lógica para eliminar un registro
-  console.log('Eliminar registro con ID:', id);
-};
-const handleItemClick = (key) => {
-  if (key === '1') {
-    // Si el elemento es 'Inicio', redirige a la ruta '/'
-    window.location.href = '/';
-  }
-};
-
-const handleEdit = (record) => {
-  // Lógica para editar un registro
-  console.log('Editar registro:', record);
-};
+import React, { useState } from "react";
+import { UserOutlined, ToolOutlined, HomeOutlined } from "@ant-design/icons";
+import { Layout, Menu, Button, theme, Breadcrumb, Divider } from "antd";
+import { Heading } from "@chakra-ui/react";
+import DataTable from "./Table.jsx";
 const { Sider, Content } = Layout;
+
 const App = () => {
   const [collapsed, setCollapsed] = useState(true);
   const {
     token: { colorBgContainer },
   } = theme.useToken();
+
+  // Obtener la información del usuario del localStorage
+  const userData = JSON.parse(localStorage.getItem("userData"));
+
+  const handleDelete = (id) => {
+    // Lógica para eliminar un registro
+    console.log("Eliminar registro con ID:", id);
+  };
+
+  const handleItemClick = (key) => {
+    if (key === "1") {
+      // Si el elemento es 'Inicio', redirige a la ruta '/'
+      window.location.href = "/";
+    }
+  };
+
+  const handleEdit = (record) => {
+    // Lógica para editar un registro
+    console.log("Editar registro:", record);
+  };
+
   return (
     <Layout>
       <Sider trigger={null} collapsible collapsed={collapsed}>
-        <div className="demo-logo-vertical" />dicen 
+        <div className="demo-logo-vertical" />
         <Menu
           theme="dark"
           mode="inline"
-          defaultSelectedKeys={['3']}
+          defaultSelectedKeys={["3"]}
           onClick={({ key }) => handleItemClick(key)}
           items={[
             {
-              key: '1',
+              key: "1",
               icon: <HomeOutlined />,
-              label: 'Inicio',
-              link: '/',
+              label: "Inicio",
+              link: "/",
             },
             {
-              key: '2',
+              key: "2",
               icon: <UserOutlined />,
-              label: 'Usuarios',
+              label: "Usuarios",
             },
             {
-              key: '3',
+              key: "3",
               icon: <ToolOutlined />,
-              label: 'Dispositivos',
+              label: "Dispositivos",
             },
           ]}
         />
       </Sider>
       <Layout>
-        
         <Content
           style={{
-            margin: '24px 16px',
+            margin: "24px 16px",
             padding: 24,
             minHeight: 280,
             background: colorBgContainer,
-          }}>
-           <Heading   mb={2} as='h1' size='xl' >Tabla de Dispositivos</Heading>
-              <Breadcrumb>
-            <Breadcrumb.Item>Inicio</Breadcrumb.Item>
-            <Breadcrumb.Item>Admin</Breadcrumb.Item>
-            <Breadcrumb.Item>Dispositivos</Breadcrumb.Item>
-            
-      </Breadcrumb>
-      <Divider />
+          }}
+        >
+          <Heading mb={2} as="h1" size="xl">
+            Tabla de Dispositivos
+          </Heading>
+
+          <Divider />
           <DataTable onDelete={handleDelete} onEdit={handleEdit} />
         </Content>
       </Layout>
