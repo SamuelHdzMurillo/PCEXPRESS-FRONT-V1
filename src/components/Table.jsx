@@ -20,7 +20,7 @@ import {
 import DeviceForm from "./DeviceForm";
 import axios from "axios";
 
-const DataTable = ({ onDelete, onEdit }) => {
+const DataTable = ({ onEdit }) => {
   const { Search } = Input;
   const [data, setData] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
@@ -37,6 +37,26 @@ const DataTable = ({ onDelete, onEdit }) => {
 
   const showModal = () => {
     setIsModalVisible(true);
+  };
+
+  const onDelete = async (deviceId) => {
+    try {
+      const response = await axios.delete(
+        `http://143.198.148.125/api/devices/${deviceId}`
+      );
+
+      if (response.status === 200) {
+        // Elimina el dispositivo de los datos
+        setData((prevData) => prevData.filter((item) => item.id !== deviceId));
+        message.success("Dispositivo eliminado exitosamente");
+      } else {
+        console.error("Error al eliminar el dispositivo");
+        message.error("Error al eliminar el dispositivo");
+      }
+    } catch (error) {
+      console.error("Error al eliminar el dispositivo:", error);
+      message.error("Error al eliminar el dispositivo");
+    }
   };
 
   const handleCancel = () => {

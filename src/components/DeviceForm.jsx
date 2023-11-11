@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { Modal, Form, Input, Select, message, Button } from "antd";
+import { Modal, Form, Input, Select, message, Button, Switch } from "antd";
 import axios from "axios";
 import FormData from "form-data";
+import OwnerModal from "./OwnerModal.jsx";
 
 const DeviceForm = ({ onClose }) => {
   const [form] = Form.useForm();
   const [isModalVisible, setIsModalVisible] = useState(true);
   const [owners, setOwners] = useState([]);
   const [technicians, setTechnicians] = useState([]);
-  const [formLayout, setFormLayout] = useState("vertical");
+  const [formLayout] = useState("vertical");
+  const [isClient, setIsClient] = useState(false);
 
-  useEffect(() => {
+  const refreshOwnersAndTechnicians = () => {
     // Obtener la lista de propietarios
     axios
       .get("http://143.198.148.125/api/catalog/owners")
@@ -30,14 +32,20 @@ const DeviceForm = ({ onClose }) => {
       .catch((error) => {
         console.error("Error al obtener la lista de técnicos", error);
       });
+  };
+
+  useEffect(() => {
+    refreshOwnersAndTechnicians();
   }, []);
 
   const showModal = () => {
     setIsModalVisible(true);
+    refreshOwnersAndTechnicians();
   };
 
   const handleCancel = () => {
     setIsModalVisible(false);
+    refreshOwnersAndTechnicians(); // Actualiza los catálogos al cerrar el modal
     onClose();
   };
 
@@ -85,20 +93,18 @@ const DeviceForm = ({ onClose }) => {
     }
 
     setIsModalVisible(false);
+    refreshOwnersAndTechnicians(); // Actualiza los catálogos al cerrar el modal
     onClose();
   };
 
   return (
     <Modal visible={isModalVisible} onCancel={handleCancel} footer={null}>
+      <OwnerModal isModalVisible={isClient} setIsModalVisible={setIsClient} />
       <Form
         form={form}
         layout={formLayout}
         style={{ maxWidth: "600px" }}
         onFinish={onFinish}
-        initialValues={{ layout: formLayout }}
-        onValuesChange={({ layout }) => {
-          setFormLayout(layout);
-        }}
       >
         <Button onClick={showModal}></Button>
         <Modal
@@ -176,10 +182,22 @@ const DeviceForm = ({ onClose }) => {
             </Select>
           </Form.Item>
 
+          <Form.Item label="¿Nuevo Cliente?" name="isClient">
+            <Switch
+              checked={isClient}
+              onChange={(checked) => setIsClient(checked)}
+            />
+          </Form.Item>
+
           <Form.Item
             label="Propietario"
             name="owner_id"
-            rules={[{ required: true, message: "Por favor ingrese el dueño" }]}
+            rules={[
+              {
+                required: isClient,
+                message: "Por favor ingrese el dueño",
+              },
+            ]}
           >
             <Select>
               {owners.map((owner) => (
