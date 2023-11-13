@@ -19,6 +19,7 @@ import {
 } from "@ant-design/icons";
 import DeviceForm from "./DeviceForm";
 import DeviceUpdateForm from "./DeviceUpdateForm";
+import EditDeviceModal from "./UpdateDeviceForm";
 import axios from "axios";
 
 const DataTable = ({ onEdit }) => {
@@ -27,10 +28,20 @@ const DataTable = ({ onEdit }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isFormVisible, setIsFormVisible] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isUpdateModalVisible, setIsUpdateModalVisible] = useState(false); // Nuevo estado para el modal de actualización
   const [selectedDeviceId, setSelectedDeviceId] = useState(null); // Nuevo estado para almacenar el ID del dispositivo seleccionado
   const openForm = () => {
     setIsFormVisible(true);
+  };
+
+  const openEditModal = (record) => {
+    setSelectedDeviceId(record.id);
+    setIsEditModalOpen(true);
+  };
+  const closeEditModal = () => {
+    setSelectedDeviceId(null);
+    setIsEditModalOpen(false);
   };
 
   const closeForm = () => {
@@ -201,7 +212,7 @@ const DataTable = ({ onEdit }) => {
             <Button
               icon={<EditFilled />}
               type="primary"
-              onClick={() => onEdit(record)}
+              onClick={() => openEditModal(record)}
             />
           </Tooltip>
           <Popconfirm
@@ -277,8 +288,8 @@ const DataTable = ({ onEdit }) => {
     <div>
       <Search
         placeholder="Buscar en la tabla"
-        onSearch={handleSearch}
-        style={{ width: 200, marginBottom: 16 }}
+        style={{ width: 300, marginBottom: 16 }}
+        onChange={(e) => handleSearch(e.target.value)}
       />
       <Tooltip title="Agregar Dispositivo">
         <Button
@@ -306,6 +317,13 @@ const DataTable = ({ onEdit }) => {
         modalVisible={isUpdateModalVisible}
         setModalVisible={setIsUpdateModalVisible}
       />
+      {isEditModalOpen && (
+        <EditDeviceModal
+          isOpen={isEditModalOpen}
+          onClose={closeEditModal}
+          deviceId={selectedDeviceId}
+        />
+      )}
 
       {isFormVisible && <DeviceForm onClose={closeForm} />}
     </div>

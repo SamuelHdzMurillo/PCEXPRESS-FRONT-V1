@@ -1,18 +1,42 @@
 import React, { useState } from "react";
-import DeviceUpdateForm from "./components/DeviceUpdateForm"; // Asegúrate de importar el componente correctamente
+import { Button } from "@chakra-ui/react";
+import EditDeviceModal from "./components/UpdateDeviceForm"; // Asegúrate de que la ruta sea correcta
 
 function App() {
-  const [isModalVisible, setIsModalVisible] = useState(false); // Estado para controlar la visibilidad del modal
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [selectedDeviceId, setSelectedDeviceId] = useState(null);
+
+  const deviceId = 12;
+
+  // Función para abrir el modal de edición
+  const openEditModal = (deviceId) => {
+    setSelectedDeviceId(deviceId);
+    setIsEditModalOpen(true);
+  };
+
+  // Función para cerrar el modal de edición
+  const closeEditModal = () => {
+    setSelectedDeviceId(null);
+    setIsEditModalOpen(false);
+  };
 
   return (
     <div>
-      <h1>Mi Aplicación</h1>
-      <DeviceUpdateForm
-        deviceId={9} // Pasa el valor correcto para deviceId
-        modalVisible={isModalVisible} // Pasa el estado para controlar la visibilidad del modal
-        setModalVisible={setIsModalVisible} // Pasa la función para actualizar el estado del modal
-        openButtonLabel="Abrir Formulario" // Puedes personalizar la etiqueta del botón de apertura
-      />
+      {/* Botón o elemento que abre el modal de edición */}
+      <Button onClick={() => openEditModal(deviceId)}>
+        Editar Dispositivo
+      </Button>
+
+      {/* Renderiza el modal de edición si está abierto */}
+      {isEditModalOpen && (
+        <EditDeviceModal
+          isOpen={isEditModalOpen}
+          onClose={closeEditModal}
+          deviceId={selectedDeviceId}
+        />
+      )}
+
+      {/* Otras partes de tu aplicación */}
     </div>
   );
 }
