@@ -137,7 +137,13 @@ const DeviceForm = ({ onClose }) => {
               },
             ]}
           >
-            <Input />
+            <Select>
+              <Select.Option value="Laptop">Laptop</Select.Option>
+              <Select.Option value="PC">PC</Select.Option>
+              <Select.Option value="Impresoras">Impresoras</Select.Option>
+              <Select.Option value="Celulares">Celulares</Select.Option>
+              <Select.Option value="Otros...">Otros...</Select.Option>
+            </Select>
           </Form.Item>
 
           <Form.Item

@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Modal, Button, Form, Input, message } from "antd";
+import { Modal, Button, Form, Input, message, Select } from "antd";
 import axios from "axios";
 
 const EditDeviceModal = ({ isOpen, onClose, deviceId }) => {
   const [form] = Form.useForm();
+  const [owners, setOwners] = useState([]);
+  const [technicians, setTechnicians] = useState([]);
 
   const [deviceData, setDeviceData] = useState({
     state: "",
@@ -15,7 +17,30 @@ const EditDeviceModal = ({ isOpen, onClose, deviceId }) => {
     owner_id: "",
   });
 
+  const refreshOwnersAndTechnicians = () => {
+    // Obtener la lista de propietarios
+    axios
+      .get("http://143.198.148.125/api/catalog/owners")
+      .then((response) => {
+        setOwners(response.data.data);
+      })
+      .catch((error) => {
+        console.error("Error al obtener la lista de propietarios", error);
+      });
+
+    // Obtener la lista de técnicos
+    axios
+      .get("http://143.198.148.125/api/catalog/users")
+      .then((response) => {
+        setTechnicians(response.data.data);
+      })
+      .catch((error) => {
+        console.error("Error al obtener la lista de técnicos", error);
+      });
+  };
+
   useEffect(() => {
+    refreshOwnersAndTechnicians();
     axios
       .get(`http://143.198.148.125/api/devices/${deviceId}`)
       .then((response) => {
@@ -64,10 +89,20 @@ const EditDeviceModal = ({ isOpen, onClose, deviceId }) => {
     >
       <Form form={form} onFinish={handleFormSubmit}>
         <Form.Item name="state" label="Estado">
-          <Input placeholder="Estado" />
+          <Select>
+            <Select.Option value="Recibido">Recibido</Select.Option>
+            <Select.Option value="En Proceso">En Proceso</Select.Option>
+            <Select.Option value="Terminado">Terminado</Select.Option>
+          </Select>
         </Form.Item>
         <Form.Item name="device_type" label="Tipo de Dispositivo">
-          <Input placeholder="Tipo de dispositivo" />
+          <Select>
+            <Select.Option value="Laptop">Laptop</Select.Option>
+            <Select.Option value="PC">PC</Select.Option>
+            <Select.Option value="Impresoras">Impresoras</Select.Option>
+            <Select.Option value="Celulares">Celulares</Select.Option>
+            <Select.Option value="Otros...">Otros...</Select.Option>
+          </Select>
         </Form.Item>
         <Form.Item name="brand" label="Marca">
           <Input placeholder="Marca" />
@@ -79,10 +114,22 @@ const EditDeviceModal = ({ isOpen, onClose, deviceId }) => {
           <Input placeholder="Accesorios" />
         </Form.Item>
         <Form.Item name="technican" label="Técnico">
-          <Input placeholder="Técnico" />
+          <Select>
+            {technicians.map((technician) => (
+              <Select.Option key={technician.id} value={technician.name}>
+                {technician.name}
+              </Select.Option>
+            ))}
+          </Select>
         </Form.Item>
         <Form.Item name="owner_id" label="Cliente">
-          <Input placeholder="Cliente" />
+          <Select>
+            {owners.map((owner) => (
+              <Select.Option key={owner.id} value={owner.id}>
+                {owner.name}-{owner.phone_number}
+              </Select.Option>
+            ))}
+          </Select>
         </Form.Item>
         <Form.Item>
           <Button type="primary" htmlType="submit">
