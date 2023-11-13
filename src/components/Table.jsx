@@ -18,6 +18,7 @@ import {
   MessageFilled,
 } from "@ant-design/icons";
 import DeviceForm from "./DeviceForm";
+import DeviceUpdateForm from "./DeviceUpdateForm";
 import axios from "axios";
 
 const DataTable = ({ onEdit }) => {
@@ -26,7 +27,8 @@ const DataTable = ({ onEdit }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isFormVisible, setIsFormVisible] = useState(false);
-
+  const [isUpdateModalVisible, setIsUpdateModalVisible] = useState(false); // Nuevo estado para el modal de actualización
+  const [selectedDeviceId, setSelectedDeviceId] = useState(null); // Nuevo estado para almacenar el ID del dispositivo seleccionado
   const openForm = () => {
     setIsFormVisible(true);
   };
@@ -84,6 +86,10 @@ const DataTable = ({ onEdit }) => {
     } catch (error) {
       console.error("Error al obtener los datos de dispositivos:", error);
     }
+  };
+  const handleAddUpdate = (record) => {
+    setSelectedDeviceId(record.id); // Almacena el ID del dispositivo seleccionado
+    setIsUpdateModalVisible(true); // Abre el modal de actualización
   };
 
   const smsMenu = (record) => (
@@ -287,6 +293,18 @@ const DataTable = ({ onEdit }) => {
         columns={columns}
         pagination={pagination}
         onChange={handleTableChange}
+      />
+
+      <Modal
+        title="Agregar Actualización"
+        visible={isUpdateModalVisible}
+        onCancel={() => setIsUpdateModalVisible(false)}
+        footer={null}
+      />
+      <DeviceUpdateForm
+        deviceId={selectedDeviceId} // Pasa el ID del dispositivo al componente DeviceUpdateForm
+        modalVisible={isUpdateModalVisible}
+        setModalVisible={setIsUpdateModalVisible}
       />
 
       {isFormVisible && <DeviceForm onClose={closeForm} />}

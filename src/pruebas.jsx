@@ -1,20 +1,18 @@
-import { useState } from "react";
-import React from "react";
-import { Button } from "antd";
-
-import OwnerModal from "./components/OwnerModal.jsx"; // Asegúrate de que la ruta sea correcta
+import React, { useState } from "react";
+import DeviceUpdateForm from "./components/DeviceUpdateForm"; // Asegúrate de importar el componente correctamente
 
 function App() {
-  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState(false); // Estado para controlar la visibilidad del modal
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <OwnerModal
-          isModalVisible={isModalVisible}
-          setIsModalVisible={setIsModalVisible}
-        />
-      </header>
+    <div>
+      <h1>Mi Aplicación</h1>
+      <DeviceUpdateForm
+        deviceId={9} // Pasa el valor correcto para deviceId
+        modalVisible={isModalVisible} // Pasa el estado para controlar la visibilidad del modal
+        setModalVisible={setIsModalVisible} // Pasa la función para actualizar el estado del modal
+        openButtonLabel="Abrir Formulario" // Puedes personalizar la etiqueta del botón de apertura
+      />
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   Button,
   Modal,
@@ -10,7 +10,7 @@ import {
   VStack,
   Text,
   Box,
-} from '@chakra-ui/react';
+} from "@chakra-ui/react";
 
 const TimelineModal = ({ isOpen, onClose, deviceUpdates }) => {
   return (
