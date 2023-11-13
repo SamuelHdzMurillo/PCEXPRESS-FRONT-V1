@@ -72,7 +72,19 @@ const App = () => {
           <Heading mb={2} as="h1" size="xl">
             Tabla de Dispositivos
           </Heading>
-
+          <Breadcrumb
+            items={[
+              {
+                title: "Inicio",
+              },
+              {
+                title: "Admin",
+              },
+              {
+                title: "Dispositivos",
+              },
+            ]}
+          />
           <Divider />
           <DataTable onDelete={handleDelete} onEdit={handleEdit} />
         </Content>

@@ -9,6 +9,7 @@ import {
   Tooltip,
   Modal,
   Menu,
+  Tag,
 } from "antd";
 import {
   PlusCircleFilled,
@@ -21,6 +22,8 @@ import DeviceForm from "./DeviceForm";
 import DeviceUpdateForm from "./DeviceUpdateForm";
 import EditDeviceModal from "./UpdateDeviceForm";
 import axios from "axios";
+import moment from "moment";
+import "moment/locale/es"; // Importa la localización que desees, por ejemplo, español
 
 const DataTable = ({ onEdit }) => {
   const { Search } = Input;
@@ -158,6 +161,25 @@ const DataTable = ({ onEdit }) => {
       title: "Estado",
       dataIndex: "state",
       key: "state",
+      render: (text, record) => {
+        let color;
+        switch (record.state) {
+          case "Recibido":
+            color = "red";
+            break;
+          case "En Proceso":
+            color = "yellow";
+            break;
+          case "Terminado":
+            color = "green";
+            break;
+          default:
+            color = "default";
+            break;
+        }
+
+        return <Tag color={color}>{record.state}</Tag>;
+      },
     },
     {
       title: "Tipo de dispositivo",
@@ -183,6 +205,9 @@ const DataTable = ({ onEdit }) => {
       title: "Fecha",
       dataIndex: "created_at",
       key: "created_at",
+      render: (text, record) => (
+        <span>{moment(record.created_at).format("DD/MM/YYYY - HH:mm:ss")}</span>
+      ),
     },
     {
       title: "Acciones",
