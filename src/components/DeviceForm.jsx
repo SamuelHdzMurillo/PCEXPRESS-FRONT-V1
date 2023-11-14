@@ -66,6 +66,8 @@ const DeviceForm = ({ onClose }) => {
     formData.append("accesories", values.accesories);
     formData.append("technican", values.technican);
     formData.append("owner_id", values.owner_id);
+    formData.append("model", values.model);
+    formData.append("observations", values.observations);
     formData.append("img", values.img[0]);
 
     return formData;
@@ -151,6 +153,18 @@ const DeviceForm = ({ onClose }) => {
             name="brand"
             rules={[{ required: true, message: "Por favor ingrese la marca" }]}
           >
+            <Input />
+          </Form.Item>
+
+          <Form.Item
+            label="Modelo"
+            name="model"
+            rules={[{ required: true, message: "Por favor ingrese El modelo" }]}
+          >
+            <Input />
+          </Form.Item>
+
+          <Form.Item label="Observaciones" name="observations">
             <Input />
           </Form.Item>
 

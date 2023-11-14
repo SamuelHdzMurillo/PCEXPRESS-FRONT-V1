@@ -53,6 +53,8 @@ const EditDeviceModal = ({ isOpen, onClose, deviceId }) => {
           accessories: data.accesories,
           technican: data.technican,
           owner_id: data.owner_id,
+          model: data.model,
+          observations: data.observations,
         });
       })
       .catch((error) => {
@@ -109,6 +111,12 @@ const EditDeviceModal = ({ isOpen, onClose, deviceId }) => {
         </Form.Item>
         <Form.Item name="damage" label="Daño">
           <Input placeholder="Daño" />
+        </Form.Item>
+        <Form.Item name="model" label="Modelo">
+          <Input placeholder="model" />
+        </Form.Item>
+        <Form.Item name="observations" label="Observaciones">
+          <Input placeholder="Observaciones" />
         </Form.Item>
         <Form.Item name="accessories" label="Accesorios">
           <Input placeholder="Accesorios" />
