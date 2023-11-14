@@ -1,34 +1,28 @@
 import React, { useState } from "react";
-import { UserOutlined, ToolOutlined, HomeOutlined } from "@ant-design/icons";
-import { Layout, Menu, Button, theme, Breadcrumb, Divider } from "antd";
+import { Layout, Menu, theme, Breadcrumb, Divider } from "antd";
 import { Heading } from "@chakra-ui/react";
-import DataTable from "./Table.jsx";
+import UserTable from "./TableNestedDevices.jsx"; // Tabla de usuarios
+import DeviceTable from "./Table.jsx"; // Tabla de dispositivos
+import { UserOutlined, ToolOutlined, HomeOutlined } from "@ant-design/icons";
+
 const { Sider, Content } = Layout;
 
 const App = () => {
   const [collapsed, setCollapsed] = useState(true);
+  const [activeTab, setActiveTab] = useState("devices"); // Estado para la pestaña activa
+
   const {
     token: { colorBgContainer },
   } = theme.useToken();
 
-  // Obtener la información del usuario del localStorage
-  const userData = JSON.parse(localStorage.getItem("userData"));
-
-  const handleDelete = (id) => {
-    // Lógica para eliminar un registro
-    console.log("Eliminar registro con ID:", id);
-  };
-
   const handleItemClick = (key) => {
     if (key === "1") {
-      // Si el elemento es 'Inicio', redirige a la ruta '/'
       window.location.href = "/";
+    } else if (key === "2") {
+      setActiveTab("users"); // Cambiar a la pestaña de usuarios
+    } else if (key === "3") {
+      setActiveTab("devices"); // Cambiar a la pestaña de dispositivos
     }
-  };
-
-  const handleEdit = (record) => {
-    // Lógica para editar un registro
-    console.log("Editar registro:", record);
   };
 
   return (
@@ -70,7 +64,9 @@ const App = () => {
           }}
         >
           <Heading mb={2} as="h1" size="xl">
-            Tabla de Dispositivos
+            {activeTab === "users"
+              ? "Tabla de Clientes"
+              : "Tabla de Dispositivos"}
           </Heading>
           <Breadcrumb
             items={[
@@ -81,15 +77,17 @@ const App = () => {
                 title: "Admin",
               },
               {
-                title: "Dispositivos",
+                title: activeTab === "users" ? "Clientes" : "Dispositivos",
               },
             ]}
           />
           <Divider />
-          <DataTable onDelete={handleDelete} onEdit={handleEdit} />
+          {/* Condición para mostrar la tabla adecuada según la pestaña */}
+          {activeTab === "users" ? <UserTable /> : <DeviceTable />}
         </Content>
       </Layout>
     </Layout>
   );
 };
+
 export default App;
