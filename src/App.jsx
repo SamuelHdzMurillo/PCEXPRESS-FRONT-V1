@@ -73,20 +73,6 @@ const DeviceList = () => {
     setSelectedDeviceUpdates([]); // Resetear las actualizaciones cuando se cambia la búsqueda
   };
 
-  if (loading) {
-    return (
-      <Box
-        display="flex"
-        alignItems="center"
-        justifyContent="center"
-        height="100vh"
-        width="100vh"
-      >
-        <Spinner size="xl" color="blue.500" />
-      </Box>
-    );
-  }
-
   // Filter the devices based on the search query
   const filteredDevices = devices.filter((device) => {
     const lowerCaseQuery = searchQuery.toLowerCase();

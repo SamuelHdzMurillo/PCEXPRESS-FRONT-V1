@@ -1,16 +1,14 @@
 import React from "react";
 import {
-  Button,
   Modal,
   ModalOverlay,
   ModalContent,
   ModalHeader,
   ModalCloseButton,
   ModalBody,
-  VStack,
-  Text,
   Box,
 } from "@chakra-ui/react";
+import { Timeline } from "antd"; // Importa el componente de Timeline de Ant Design
 
 const TimelineModal = ({ isOpen, onClose, deviceUpdates }) => {
   return (
@@ -20,22 +18,24 @@ const TimelineModal = ({ isOpen, onClose, deviceUpdates }) => {
         <ModalHeader>Historial de Actualizaciones</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <VStack spacing={4}>
+          <Timeline mode="left">
+            {" "}
+            {/* Utiliza el componente Timeline de Ant Design */}
             {deviceUpdates.map((update) => (
-              <Box
-                key={update.id}
-                p={4}
-                border="1px solid"
-                borderColor="gray.200"
-                borderRadius="md"
-              >
-                <Text fontSize="lg">{update.description}</Text>
-                <Text fontSize="sm" color="gray.500">
-                  {new Date(update.created_at).toLocaleString()}
-                </Text>
-              </Box>
+              <Timeline.Item key={update.id}>
+                <Box
+                  p={4}
+                  border="1px solid"
+                  borderColor="gray.200"
+                  borderRadius="md"
+                >
+                  <strong>{update.Title}</strong>
+                  <p>{update.description}</p>
+                  <p>{new Date(update.created_at).toLocaleString()}</p>
+                </Box>
+              </Timeline.Item>
             ))}
-          </VStack>
+          </Timeline>
         </ModalBody>
       </ModalContent>
     </Modal>

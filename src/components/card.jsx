@@ -34,10 +34,16 @@ const DeviceCard = ({ data, openTimelineModal, openDeviceModal }) => {
           />
         </Box>
         <Stack mt="5" spacing="5">
-          <Heading size="md">{data.brand}</Heading>
-          <Heading size="sm">Orden: {data.id}</Heading>
-          <Text size="sm">{data.owner.name}</Text>
-          <Text>{data.damage}</Text>
+          <Heading size="md">{data.owner.name}</Heading>
+          <Heading size="sm">
+            <strong>Orden:</strong> {data.id}
+          </Heading>
+          <Text size="sm">
+            <strong>Daño:</strong> {data.damage}
+          </Text>
+          <Text>
+            <strong>Tecnico a cargo:</strong> {data.technican}
+          </Text>
           <Badge
             colorScheme={
               data.state === "Recibido"
@@ -64,7 +70,10 @@ const DeviceCard = ({ data, openTimelineModal, openDeviceModal }) => {
           >
             Ver Detalles
           </Button>
-          <Button colorScheme="yellow" onClick={() => openTimelineModal(data)}>
+          <Button
+            colorScheme="yellow"
+            onClick={() => openTimelineModal(data.id)}
+          >
             Ver Historial
           </Button>
         </ButtonGroup>
