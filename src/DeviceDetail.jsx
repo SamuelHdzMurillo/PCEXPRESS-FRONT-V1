@@ -5,6 +5,7 @@ import DeviceCard from "./components/card"; // Importa tu componente de tarjeta 
 import TimelineModal from "./components/TimelineModal.jsx";
 import DeviceInfo from "./components/DeviceInfo.jsx";
 import { Container, background } from "@chakra-ui/react";
+import { message, Breadcrumb, Spin } from "antd";
 
 const DeviceDetails = () => {
   const { id } = useParams();
@@ -34,6 +35,7 @@ const DeviceDetails = () => {
       setIsTimelineModalOpen(true);
     } catch (error) {
       console.error("Error fetching updates:", error);
+      message.error("El dispositivo no existe");
     }
   };
 
@@ -49,35 +51,103 @@ const DeviceDetails = () => {
       });
 
     // Muestra una alerta cuando el componente se monta
-    alert(
-      "El dispositivo máximo puede durar una semana después de la reparación."
+    message.info(
+      " El equipo puede estar maximo una semana despues de la reparacion"
     );
   }, [id]);
 
   if (!deviceData) {
-    return <p>Cargando...</p>;
+    return (
+      <div
+        style={{
+          backgroundColor: "#f5f4f4",
+          minHeight: "100vh",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Spin tip="Loading..." />
+      </div>
+    );
   }
 
   return (
-    <div>
-      {/* Renderiza el componente de tarjeta de dispositivo con los detalles */}
-      <Container maxW="2xl" centerContent>
-        <DeviceCard
-          data={deviceData}
-          openTimelineModal={() => openTimelineModal(deviceData.id)}
-          openDeviceModal={() => openDeviceModal(deviceData.id)}
-        />
-        <TimelineModal
-          isOpen={isTimelineModalOpen}
-          onClose={closeTimelineModal}
-          deviceUpdates={selectedDeviceUpdates}
-        />
-        <DeviceInfo
-          isOpen={isDeviceModalOpen}
-          onClose={closeDeviceModal}
-          deviceId={selectedDeviceId}
-        />
-      </Container>
+    <div
+      style={{
+        backgroundColor: "#f5f4f4",
+        minHeight: "100vh",
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
+      {/* Encabezado */}
+      <header
+        style={{
+          backgroundColor: "#001428",
+          padding: "20px",
+          textAlign: "center",
+        }}
+      >
+        <h1>PC Express</h1>
+        <nav>{/* Aquí puedes colocar tu breadcrumb */}</nav>
+      </header>
+
+      {/* Contenedor central */}
+      <div
+        style={{
+          flex: "1",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Container maxW="xl">
+          <div
+            style={{
+              padding: "20px",
+              boxShadow: "0 4px 8px 0 rgba(0,0,0,0.2)",
+              borderRadius: "8px",
+              backgroundColor: "white",
+              width: "100%",
+              maxWidth: "500px",
+            }}
+          >
+            {/* Título */}
+            <header>Dispositivo </header>
+
+            <Breadcrumb
+              items={[
+                {
+                  title: "Inicio",
+                },
+                {
+                  title: "Cliente",
+                },
+                {
+                  title: "Dispositivos",
+                },
+              ]}
+            />
+            <DeviceCard
+              data={deviceData}
+              openTimelineModal={() => openTimelineModal(deviceData.id)}
+              openDeviceModal={() => openDeviceModal(deviceData.id)}
+            />
+            <TimelineModal
+              isOpen={isTimelineModalOpen}
+              onClose={closeTimelineModal}
+              deviceUpdates={selectedDeviceUpdates}
+            />
+            <DeviceInfo
+              isOpen={isDeviceModalOpen}
+              onClose={closeDeviceModal}
+              deviceId={selectedDeviceId}
+            />
+          </div>
+        </Container>
+      </div>
     </div>
   );
 };

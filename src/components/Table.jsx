@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+
 import {
   Table,
   Button,
@@ -149,7 +151,9 @@ const DataTable = ({ onEdit }) => {
       title: "Orden",
       dataIndex: "id",
       key: "name",
-      render: (text, record) => <span>{record.id}</span>,
+      render: (text, record) => (
+        <Link to={`/devices/${record.id}`}>{record.id}</Link>
+      ),
     },
     {
       title: "Cliente",
