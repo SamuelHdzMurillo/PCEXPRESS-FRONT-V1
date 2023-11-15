@@ -1,14 +1,12 @@
 import React from "react";
-import ClientTable from "./components/TableNestedDevices";
-// Ajusta la ruta según la ubicación del archivo
+import UsersTable from "./components/TableUser"; // Asegúrate de tener la ruta correcta hacia el componente
 
-const Main = () => {
+function App() {
   return (
-    <div>
-      <h1>Tu Aplicación</h1>
-      <ClientTable />
+    <div className="App">
+      <UsersTable />
     </div>
   );
-};
+}
 
-export default Main;
+export default App;

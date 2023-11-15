@@ -1,14 +1,14 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import ModalComponent from './components/DeviceForm'; // Importa el componente modal
+import { Button } from "@chakra-ui/react";
+import UserRegistrationModal from "./components/RegisterUser";
+import React from "react";
 
-const App = () => {
+const MainComponent = () => {
   return (
     <div>
-      <h1>Mi Aplicación</h1>
-      <ModalComponent />
+      <UserRegistrationModal openButton={<Button>Registrar Usuario</Button>} />
+      {/* Resto de tu código */}
     </div>
   );
 };
 
-export default App;
+export default MainComponent;
