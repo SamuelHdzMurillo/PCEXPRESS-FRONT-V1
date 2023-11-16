@@ -1,44 +1,29 @@
 import React from "react";
-import ReactDOM from "react-dom/client";
-import { ChakraProvider } from "@chakra-ui/react";
+import ReactDOM from "react-dom";
 import App from "./App";
 import Hola from "./holamundo.jsx";
 import Login from "./login.jsx";
 import Index from "./index.jsx";
 import Pruebas from "./pruebas.jsx";
 import DeviceDetail from "./DeviceDetail.jsx";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+const AppRoutes = () => {
+  return (
+    <Routes>
+      <Route path="/hola" element={<Hola />} />
+      <Route path="/" element={<App />} />
+      <Route path="/Login" element={<Login />} />
+      <Route path="/adminDevices" element={<Index />} />
+      <Route path="/prueba" element={<Pruebas />} />
+      <Route path="/devices/:id" element={<DeviceDetail />} />
+    </Routes>
+  );
+};
 
-const router = createBrowserRouter([
-  {
-    path: "/hola",
-    element: <Hola></Hola>,
-  },
-  {
-    path: "/",
-    element: <App></App>,
-  },
-  {
-    path: "/Login",
-    element: <Login></Login>,
-  },
-  {
-    path: "/adminDevices",
-    element: <Index></Index>,
-  },
-  {
-    path: "/prueba",
-    element: <Pruebas></Pruebas>,
-  },
-  {
-    path: "/devices/:id",
-    element: <DeviceDetail />,
-  },
-]);
-
-ReactDOM.createRoot(document.getElementById("root")).render(
-  <ChakraProvider>
-    <RouterProvider router={router} />
-  </ChakraProvider>
+ReactDOM.render(
+  <Router>
+    <AppRoutes />
+  </Router>,
+  document.getElementById("root")
 );
