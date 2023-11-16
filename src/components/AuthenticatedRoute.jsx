@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
-import UsersTable from "./components/TableUser"; // Asegúrate de tener la ruta correcta hacia el componente
-import Login from "./NoAuth.jsx"; // Importa tu componente de inicio de sesión
+import { Button, Result } from "antd";
 
-function App() {
+const AuthenticatedRoute = ({ children }) => {
+  // Estado para verificar si el usuario está autenticado
   const [loggedIn, setLoggedIn] = useState(false);
 
   // Efecto para verificar el token al cargar el componente
   useEffect(() => {
-    const userData = localStorage.getItem("userData");
+    const userData = JSON.parse(localStorage.getItem("userData"));
 
     // Verificar si existe userData y si tiene el formato esperado
     if (userData) {
@@ -15,9 +15,7 @@ function App() {
         const { token } = JSON.parse(userData);
         if (token && typeof token === "string" && token.length > 0) {
           // Si el token es válido, establece loggedIn a true
-          console.log("sc" + loggedIn);
           setLoggedIn(true);
-          console.log("cc" + loggedIn);
         } else {
           // Si el token no es válido, establece loggedIn a false
           setLoggedIn(false);
@@ -39,18 +37,24 @@ function App() {
     setLoggedIn(false);
   };
 
-  return (
-    <div className="App">
-      {loggedIn ? (
-        // Si el usuario está autenticado, muestra la tabla de usuarios
-        <UsersTable />
-      ) : (
-        // Si el usuario no está autenticado, muestra el componente de inicio de sesión
-        <Login />
-        // Puedes personalizar esto según tu flujo de autenticación (página de inicio de sesión, etc.)
-      )}
-    </div>
-  );
-}
+  // Si el usuario no está autenticado, muestra la página de acceso no autorizado
+  if (!loggedIn) {
+    return (
+      <Result
+        status="403"
+        title="403"
+        subTitle="Sorry, you are not authorized to access this page."
+        extra={
+          <Button type="primary" onClick={handleBackToLogin}>
+            Back to Login
+          </Button>
+        }
+      />
+    );
+  }
 
-export default App;
+  // Si el usuario está autenticado, muestra el contenido de la página protegida
+  return children;
+};
+
+export default AuthenticatedRoute;

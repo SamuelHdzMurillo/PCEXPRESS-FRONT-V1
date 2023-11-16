@@ -9,6 +9,7 @@ import {
   ToolOutlined,
   HomeOutlined,
   SettingFilled,
+  LogoutOutlined,
 } from "@ant-design/icons";
 
 const { Sider, Content } = Layout;
@@ -21,6 +22,13 @@ const App = () => {
     token: { colorBgContainer },
   } = theme.useToken();
 
+  const handleLogout = () => {
+    // Limpiar el token del localStorage al cerrar sesión
+    localStorage.removeItem("userData");
+    // Redirigir a la página de inicio de sesión
+    window.location.href = "/login";
+  };
+
   const handleItemClick = (key) => {
     if (key === "1") {
       window.location.href = "/";
@@ -30,6 +38,8 @@ const App = () => {
       setActiveTab("devices"); // Cambiar a la pestaña de dispositivos
     } else if (key === "4") {
       setActiveTab("tecnicos"); // Cambiar a la pestaña de técnicos
+    } else if (key === "5") {
+      handleLogout(); // Cerrar sesión al hacer clic en el botón "Cerrar Sesión"
     }
   };
 
@@ -43,6 +53,11 @@ const App = () => {
           defaultSelectedKeys={["3"]}
           onClick={({ key }) => handleItemClick(key)}
           items={[
+            {
+              key: "5",
+              icon: <LogoutOutlined />,
+              label: "Cerrar sesion",
+            },
             {
               key: "1",
               icon: <HomeOutlined />,
