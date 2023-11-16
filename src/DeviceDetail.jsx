@@ -90,7 +90,7 @@ const DeviceDetails = () => {
           textAlign: "center",
         }}
       >
-        <h1>PC Express</h1>
+        <h1 style={{ color: "white" }}>PC Express</h1>
         <nav>{/* Aquí puedes colocar tu breadcrumb */}</nav>
       </header>
 

@@ -1,13 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { Table, Button, message, Popconfirm, Input } from "antd";
-import { SearchOutlined, DeleteFilled } from "@ant-design/icons";
+import {
+  SearchOutlined,
+  DeleteFilled,
+  PlusCircleFilled,
+} from "@ant-design/icons";
 import Highlighter from "react-highlight-words";
+import UserRegistrationModal from "./RegisterUser.jsx"; // Ajusta la ruta según la ubicación del archivo UserRegistrationModal.js
+
 import moment from "moment";
 
 const UsersTable = () => {
   const [userData, setUserData] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
+  const [showRegistrationModal, setShowRegistrationModal] = useState(false);
 
   useEffect(() => {
     fetch("http://143.198.148.125/api/users")
@@ -152,6 +159,16 @@ const UsersTable = () => {
 
   return (
     <div>
+      <UserRegistrationModal
+        openButton={
+          <Button
+            icon={<PlusCircleFilled />}
+            type="primary"
+            onClick={() => setShowRegistrationModal(true)}
+          />
+        }
+      />
+      {/* Puedes personalizar el botón de apertura según tus necesidades */}
       <Table dataSource={userData} columns={columns} rowKey="id" />
     </div>
   );

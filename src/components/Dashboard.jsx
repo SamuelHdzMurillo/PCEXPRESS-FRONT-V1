@@ -4,7 +4,12 @@ import { Heading } from "@chakra-ui/react";
 import UserTable from "./TableNestedDevices.jsx"; // Tabla de usuarios
 import DeviceTable from "./Table.jsx"; // Tabla de dispositivos
 import TechTable from "./TableUser.jsx"; // Tabla de técnicos
-import { UserOutlined, ToolOutlined, HomeOutlined } from "@ant-design/icons";
+import {
+  UserOutlined,
+  ToolOutlined,
+  HomeOutlined,
+  SettingFilled,
+} from "@ant-design/icons";
 
 const { Sider, Content } = Layout;
 
@@ -56,7 +61,7 @@ const App = () => {
             },
             {
               key: "4",
-              icon: <ToolOutlined />,
+              icon: <SettingFilled />,
               label: "Técnicos",
             },
           ]}

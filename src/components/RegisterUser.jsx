@@ -75,7 +75,7 @@ export default function UserRegistrationModal({ openButton }) {
       <Modal isOpen={isOpen} onClose={handleCloseModal}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>User Registration</ModalHeader>
+          <ModalHeader>Registro de Tecnico</ModalHeader>
           <ModalCloseButton />
           <ModalBody pb={6}>
             {showSuccessMessage ? (
@@ -85,40 +85,40 @@ export default function UserRegistrationModal({ openButton }) {
             ) : (
               <>
                 <FormControl>
-                  <FormLabel>User Name</FormLabel>
+                  <FormLabel>Nombre del Tecnico </FormLabel>
                   <Input
                     value={userName}
                     onChange={(e) => setUserName(e.target.value)}
-                    placeholder="Username"
+                    placeholder="Usuario"
                   />
                 </FormControl>
 
                 <FormControl mt={4}>
-                  <FormLabel>Email Address</FormLabel>
+                  <FormLabel>Correo Electronico </FormLabel>
                   <Input
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="your-email@example.com"
+                    placeholder="Correo Electronico"
                     type="email"
                   />
                 </FormControl>
 
                 <FormControl mt={4}>
-                  <FormLabel>Password</FormLabel>
+                  <FormLabel>Contraseña</FormLabel>
                   <Input
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    placeholder="Password"
+                    placeholder="contraseña"
                     type="password"
                   />
                 </FormControl>
 
                 <FormControl mt={4}>
-                  <FormLabel>Confirm Password</FormLabel>
+                  <FormLabel>Confirmar contraseña</FormLabel>
                   <Input
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
-                    placeholder="Confirm password"
+                    placeholder="Confirmar contraseña"
                     type="password"
                   />
                 </FormControl>
@@ -136,10 +136,10 @@ export default function UserRegistrationModal({ openButton }) {
             {!showSuccessMessage && (
               <>
                 <Button variant="ghost" mr={3} onClick={handleCloseModal}>
-                  Cancel
+                  Cancelar
                 </Button>
                 <Button colorScheme="blue" onClick={handleSubmit}>
-                  Submit
+                  Enviar
                 </Button>
               </>
             )}
