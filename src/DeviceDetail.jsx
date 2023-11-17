@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import DeviceCard from "./components/card"; // Importa tu componente de tarjeta de dispositivo
-import TimelineModal from "./components/TimelineModal.jsx";
+import TimelineModal from "./components/TimeLineModal.jsx";
 import DeviceInfo from "./components/DeviceInfo.jsx";
 import { Container, background } from "@chakra-ui/react";
 import { message, Breadcrumb, Spin } from "antd";

@@ -9,7 +9,7 @@ import {
   InputRightElement,
 } from "@chakra-ui/react";
 import Card from "./components/card.jsx";
-import TimelineModal from "./components/TimelineModal.jsx";
+import TimelineModal from "./components/TimeLineModal.jsx";
 import DeviceInfo from "./components/DeviceInfo.jsx";
 import axios from "axios";
 import "./styles/style.css";
