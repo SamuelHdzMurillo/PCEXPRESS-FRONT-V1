@@ -43,6 +43,11 @@ const DeviceForm = ({ onClose }) => {
     refreshOwnersAndTechnicians();
   };
 
+  const handleOwnerChange = (value) => {
+    refreshOwnersAndTechnicians(); // Vuelve a obtener los catálogos al cambiar la opción del Select
+    // Otras acciones que desees realizar al cambiar la opción del Select
+  };
+
   const handleCancel = () => {
     setIsModalVisible(false);
     refreshOwnersAndTechnicians(); // Actualiza los catálogos al cerrar el modal
@@ -219,7 +224,7 @@ const DeviceForm = ({ onClose }) => {
               },
             ]}
           >
-            <Select>
+            <Select onChange={handleOwnerChange} onClick={handleOwnerChange}>
               {owners.map((owner) => (
                 <Select.Option key={owner.id} value={owner.id}>
                   {owner.name}-{owner.phone_number}

@@ -32,7 +32,22 @@ const UsersTable = () => {
   }, []);
 
   const handleDelete = (userId) => {
-    // ... código existente para eliminar usuario
+    fetch(`http://143.198.148.125/api/users/${userId}`, {
+      method: "DELETE",
+    })
+      .then((response) => {
+        if (response.ok) {
+          const updatedUserData = userData.filter((user) => user.id !== userId);
+          setUserData(updatedUserData);
+          message.success("Usuario eliminado correctamente");
+        } else {
+          message.error("Hubo un problema al eliminar el usuario");
+        }
+      })
+      .catch((error) => {
+        console.error("Error al eliminar el usuario:", error);
+        message.error("Hubo un problema al eliminar el usuario");
+      });
   };
 
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
