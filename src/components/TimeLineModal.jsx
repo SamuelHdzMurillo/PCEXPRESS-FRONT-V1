@@ -29,7 +29,9 @@ const TimelineModal = ({ isOpen, onClose, deviceUpdates }) => {
                   borderColor="gray.200"
                   borderRadius="md"
                 >
-                  <strong>{update.Title}</strong>
+                  <p>
+                    <strong>{update.title}</strong>
+                  </p>
                   <p>{update.description}</p>
                   <p>{new Date(update.created_at).toLocaleString()}</p>
                 </Box>

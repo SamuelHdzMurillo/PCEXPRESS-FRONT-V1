@@ -272,7 +272,7 @@ const DataTable = ({ onEdit }) => {
       // Realiza una solicitud HTTP al endpoint con el ID del registro seleccionado
       const response = await axios({
         method: "GET",
-        url: `http://www.pcexpressbcs.com.mx/api/devices/${record.id}/ticket`,
+        url: `http://143.198.148.125/api/devices/${record.id}/ticket`,
         responseType: "arraybuffer", // Importante: solicitar una respuesta en formato de array de bytes (binario)
       });
 

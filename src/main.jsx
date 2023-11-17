@@ -3,7 +3,7 @@ import ReactDOM from "react-dom/client";
 import { ChakraProvider } from "@chakra-ui/react";
 import App from "./App";
 import Hola from "./holamundo.jsx";
-import Login from "./Login.jsx";
+import Login from "./login.jsx";
 import Index from "./index.jsx";
 import Pruebas from "./pruebas.jsx";
 import DeviceDetail from "./DeviceDetail.jsx";
@@ -21,11 +21,11 @@ const router = createBrowserRouter([
     element: <NoAuth></NoAuth>,
   },
   {
-    path: "/",
+    path: "/app",
     element: <App></App>,
   },
   {
-    path: "/Login",
+    path: "/",
     element: <Login></Login>,
   },
   {
