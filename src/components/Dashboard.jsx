@@ -31,7 +31,7 @@ const App = () => {
 
   const handleItemClick = (key) => {
     if (key === "1") {
-      window.location.href = "/";
+      window.location.href = "/app";
     } else if (key === "2") {
       setActiveTab("users"); // Cambiar a la pestaña de usuarios
     } else if (key === "3") {
@@ -62,7 +62,7 @@ const App = () => {
               key: "1",
               icon: <HomeOutlined />,
               label: "Inicio",
-              link: "/",
+              link: "/app",
             },
             {
               key: "2",

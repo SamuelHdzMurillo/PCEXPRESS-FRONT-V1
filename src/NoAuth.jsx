@@ -12,7 +12,7 @@ const App = () => (
       title="403"
       subTitle="Perdon, No estas autorizado para estar en este Sitio."
       extra={
-        <Button href="/login" type="primary">
+        <Button href="/" type="primary">
           Iniciar Sesion
         </Button>
       }
