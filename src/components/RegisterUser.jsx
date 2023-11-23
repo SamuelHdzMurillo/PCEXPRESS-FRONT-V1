@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Button,
   FormControl,
@@ -12,7 +12,12 @@ import {
   ModalBody,
   ModalCloseButton,
   useDisclosure,
+  Alert,
+  AlertIcon,
+  AlertTitle,
+  AlertDescription,
 } from "@chakra-ui/react";
+import axios from "axios";
 
 export default function UserRegistrationModal({ openButton }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -22,41 +27,75 @@ export default function UserRegistrationModal({ openButton }) {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [registerError, setRegisterError] = useState("");
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  const [existingEmails, setExistingEmails] = useState([]);
 
-  const handleSubmit = async () => {
-    // Verificar si las contraseñas coinciden
+  useEffect(() => {
+    // Hacer la petición GET para obtener la lista de correos existentes
+    const fetchExistingEmails = async () => {
+      try {
+        const response = await axios.get("http://143.198.148.125/api/users");
+        const usersData = response.data;
+
+        const emails = usersData.data.map((user) => user.email);
+        setExistingEmails(emails);
+      } catch (error) {
+        console.error("Error fetching existing emails:", error);
+      }
+    };
+
+    fetchExistingEmails();
+  }, []);
+
+  const validateForm = () => {
+    if (!userName || !email || !password || !confirmPassword) {
+      setRegisterError("Por favor, completa todos los campos.");
+      return false;
+    }
+
     if (password !== confirmPassword) {
       setRegisterError("Las contraseñas no coinciden");
+      return false;
+    }
+
+    if (existingEmails.includes(email)) {
+      setRegisterError("Este correo ya está registrado. Por favor, utiliza otro.");
+      return false;
+    }
+
+    // Limpiar el estado de error si se corrige la información
+    setRegisterError("");
+    return true;
+  };
+
+  const handleSubmit = async () => {
+    if (!validateForm()) {
       return;
     }
 
-    // Aquí debes implementar la lógica para enviar la solicitud POST a la API
-    // y manejar la respuesta para el registro del usuario
     try {
-      const response = await fetch("http://143.198.148.125/api/users", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ name: userName, email, password }),
+      // Enviar solicitud POST a la API
+      const response = await axios.post("http://143.198.148.125/api/users", {
+        name: userName,
+        email,
+        password,
       });
 
-      if (response.ok) {
+      if (response.status === 200 || 201) {
+        // Registro exitoso
         setShowSuccessMessage(true);
-        setRegisterError("");
-        // Limpiar los campos después de un registro exitoso si es necesario
-        setUserName("");
-        setEmail("");
-        setPassword("");
-        setConfirmPassword("");
       } else {
-        const data = await response.json();
-        setRegisterError(data.message || "Ha ocurrido un error en el registro");
+        setRegisterError("Ha ocurrido un error en el registro");
       }
     } catch (error) {
       setRegisterError("Ha ocurrido un error en la conexión");
       console.error("Error:", error);
     }
+  };
+
+  const handleCloseAlert = () => {
+    setShowSuccessMessage(false);
+    setRegisterError("");
+    onClose(); // Cerrar el modal
   };
 
   const handleCloseModal = () => {
@@ -75,17 +114,32 @@ export default function UserRegistrationModal({ openButton }) {
       <Modal isOpen={isOpen} onClose={handleCloseModal}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Registro de Tecnico</ModalHeader>
+          <ModalHeader>Registro de Técnico</ModalHeader>
           <ModalCloseButton />
           <ModalBody pb={6}>
             {showSuccessMessage ? (
-              <p style={{ color: "green", marginTop: "8px" }}>
-                ¡Registro exitoso!
-              </p>
+              <Alert
+                status="success"
+                variant="subtle"
+                flexDirection="column"
+                alignItems="center"
+                justifyContent="center"
+                textAlign="center"
+                height="200px"
+              >
+                <AlertIcon boxSize="40px" mr={0} />
+                <AlertTitle mt={4} mb={1} fontSize="lg">
+                  ¡Registro exitoso!
+                </AlertTitle>
+                <AlertDescription>Clic en cerrar para continuar</AlertDescription>
+                <Button mt={4} onClick={handleCloseAlert}>
+                  Cerrar
+                </Button>
+              </Alert>
             ) : (
               <>
                 <FormControl>
-                  <FormLabel>Nombre del Tecnico </FormLabel>
+                  <FormLabel>Nombre del Técnico</FormLabel>
                   <Input
                     value={userName}
                     onChange={(e) => setUserName(e.target.value)}
@@ -94,11 +148,11 @@ export default function UserRegistrationModal({ openButton }) {
                 </FormControl>
 
                 <FormControl mt={4}>
-                  <FormLabel>Correo Electronico </FormLabel>
+                  <FormLabel>Correo Electrónico</FormLabel>
                   <Input
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="Correo Electronico"
+                    placeholder="Correo Electrónico"
                     type="email"
                   />
                 </FormControl>
@@ -108,25 +162,26 @@ export default function UserRegistrationModal({ openButton }) {
                   <Input
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    placeholder="contraseña"
+                    placeholder="Contraseña"
                     type="password"
                   />
                 </FormControl>
 
                 <FormControl mt={4}>
-                  <FormLabel>Confirmar contraseña</FormLabel>
+                  <FormLabel>Confirmar Contraseña</FormLabel>
                   <Input
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
-                    placeholder="Confirmar contraseña"
+                    placeholder="Confirmar Contraseña"
                     type="password"
                   />
                 </FormControl>
 
                 {registerError && (
-                  <p style={{ color: "red", marginTop: "8px" }}>
+                  <Alert status="error">
+                    <AlertIcon />
                     {registerError}
-                  </p>
+                  </Alert>
                 )}
               </>
             )}
