@@ -34,7 +34,7 @@ export default function UseClient() {
     };
 
     // URL de la API de inicio de sesión
-    const loginUrl = "https://pcexpressbcs.com.mx/api/login";
+    const loginUrl = "https://www.pcexpressbcs.com.mx/api/login";
 
     // Realizar la solicitud de inicio de sesión
     axios
