@@ -1,18 +1,22 @@
-import React from "react";
-import { Modal, Form, Input, Select, Button } from "antd";
+import React, { useState } from "react";
+import { Modal, Form, Input, Select, Button, message, Alert } from "antd";
 import axios from "axios";
 
 const { Option } = Select;
 
 const OwnerForm = ({ isModalVisible, setIsModalVisible }) => {
   const [form] = Form.useForm();
-
+  const [alertVisible, setAlertVisible] = useState(false);
+  const [alertType, setAlertType] = useState("success");
+  const [alertMessage, setAlertMessage] = useState("");
   const showModal = () => {
     setIsModalVisible(true);
   };
 
   const handleCancel = () => {
     setIsModalVisible(false);
+    setAlertVisible(false); // Ocultar la alerta al cerrar el modal
+    form.resetFields();
   };
 
   const sendOwnerData = (values) => {
@@ -24,11 +28,39 @@ const OwnerForm = ({ isModalVisible, setIsModalVisible }) => {
     return formData;
   };
 
-  const onFinish = async (values) => {
-    const formData = sendOwnerData(values);
-
+  const onFinish = async () => {
     try {
-      const response = await axios.post(
+      const response = await axios.get("http://143.198.148.125/api/owners");
+      const ownersData = response.data; // Datos de propietarios obtenidos
+
+      const validatedValues = await form.validateFields();
+      const isDuplicateEmail = ownersData.some(
+        (owner) => owner.email === validatedValues.email
+      );
+      const isDuplicatePhoneNumber = ownersData.some(
+        (owner) => owner.phone_number === validatedValues.phone_number
+      );
+
+      if (isDuplicateEmail && isDuplicatePhoneNumber) {
+        message.warning(
+          "El propietario ya existe con este correo y número de teléfono. No se pueden duplicar datos."
+        );
+        return;
+      } else if (isDuplicateEmail) {
+        message.warning(
+          "El propietario ya existe con este correo. No se pueden duplicar datos. Por favor, cambia el correo."
+        );
+        return;
+      } else if (isDuplicatePhoneNumber) {
+        message.warning(
+          "El propietario ya existe con este número de teléfono. No se pueden duplicar datos. Por favor, cambia el número de teléfono."
+        );
+        return;
+      }
+
+      // Si no hay duplicados, proceder con el envío de datos
+      const formData = sendOwnerData(validatedValues);
+      const postResponse = await axios.post(
         "http://143.198.148.125/api/owners",
         formData,
         {
@@ -38,10 +70,30 @@ const OwnerForm = ({ isModalVisible, setIsModalVisible }) => {
         }
       );
 
-      console.log("Respuesta del servidor:", response.data);
+      // Mostrar mensaje de éxito y ocultar el modal si los datos se envían correctamente
+      console.log("Respuesta del servidor:", postResponse.data);
+      message.success("Datos enviados correctamente");
       setIsModalVisible(false);
     } catch (error) {
-      console.error("Error al enviar los datos:", error);
+      // Manejo de errores
+      if (axios.isAxiosError(error)) {
+        if (error.response) {
+          console.error(
+            `Error ${error.response.status}: ${error.response.data}`
+          );
+        } else if (error.request) {
+          console.error(
+            "Error de conexión: No se pudo establecer comunicación con el servidor"
+          );
+        } else {
+          console.error("Error:", error.message);
+        }
+        message.error(
+          "Ocurrió un error al enviar los datos. Por favor, inténtalo de nuevo más tarde."
+        );
+      } else {
+        console.error("Error:", error);
+      }
     }
   };
 
@@ -60,6 +112,7 @@ const OwnerForm = ({ isModalVisible, setIsModalVisible }) => {
           <Form.Item
             label="Nombre"
             name="name"
+            style={{ zIndex: 9999 }}
             rules={[
               { required: true, message: "Por favor ingresa un nombre." },
             ]}

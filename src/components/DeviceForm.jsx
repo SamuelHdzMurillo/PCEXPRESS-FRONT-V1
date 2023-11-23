@@ -11,6 +11,14 @@ const DeviceForm = ({ onClose }) => {
   const [technicians, setTechnicians] = useState([]);
   const [formLayout] = useState("vertical");
   const [isClient, setIsClient] = useState(false);
+  const options = owners.map((owner) => ({
+    value: `${owner.name}-${owner.phone_number}`,
+    label: `${owner.name}-${owner.phone_number}`,
+  }));
+
+  const handleSelection = (value) => {
+    handleOwnerChange(value);
+  };
 
   const refreshOwnersAndTechnicians = () => {
     // Obtener la lista de propietarios
@@ -224,13 +232,25 @@ const DeviceForm = ({ onClose }) => {
               },
             ]}
           >
-            <Select onChange={handleOwnerChange} onClick={handleOwnerChange}>
-              {owners.map((owner) => (
-                <Select.Option key={owner.id} value={owner.id}>
-                  {owner.name}-{owner.phone_number}
-                </Select.Option>
-              ))}
-            </Select>
+            <Select
+              onClick={handleOwnerChange}
+              showSearch
+              style={{
+                width: 350,
+              }}
+              placeholder="Buscar propietario"
+              optionFilterProp="label"
+              filterOption={(input, option) =>
+                option.label.toLowerCase().includes(input.toLowerCase())
+              }
+              filterSort={(optionA, optionB) =>
+                optionA.label
+                  .toLowerCase()
+                  .localeCompare(optionB.label.toLowerCase())
+              }
+              onChange={handleSelection}
+              options={options}
+            />
           </Form.Item>
 
           <Form.Item
