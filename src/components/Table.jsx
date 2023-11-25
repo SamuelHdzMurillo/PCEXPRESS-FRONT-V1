@@ -12,6 +12,7 @@ import {
   Modal,
   Menu,
   Tag,
+  message,
 } from "antd";
 import {
   PlusCircleFilled,
@@ -133,16 +134,19 @@ const DataTable = ({ onEdit }) => {
   const handleStatusChange = async (deviceId, status) => {
     try {
       // Define la URL según el estado seleccionado
-      const url = `https://www.pcexpressbcs.com.mx/api/${deviceId}/${status}`;
+      const url = `https://www.pcexpressbcs.com.mx/api/devices/${deviceId}/${status}`;
 
       // Realiza la solicitud HTTP
       const response = await axios.get(url);
 
       if (response.status === 200) {
         // Actualiza la lista de dispositivos después de cambiar el estado
+
         fetchData();
+        message.success("Mensaje enviado con éxito");
       } else {
         console.error("Error al cambiar el estado del dispositivo");
+        message.error("Error al enviar mensaje , Contacta soporte!");
       }
     } catch (error) {
       console.error("Error al cambiar el estado del dispositivo:", error);
