@@ -12,7 +12,7 @@ const DeviceForm = ({ onClose }) => {
   const [formLayout] = useState("vertical");
   const [isClient, setIsClient] = useState(false);
   const options = owners.map((owner) => ({
-    value: `${owner.name}-${owner.phone_number}`,
+    value: `${owner.id}`,
     label: `${owner.name}-${owner.phone_number}`,
   }));
 
