@@ -10,61 +10,42 @@ import {
   Image,
 } from "@chakra-ui/react";
 import { Flex } from "@chakra-ui/layout";
+import { Navigate } from "react-router-dom";
 import axios from "axios";
-
-// Importa componentes de alerta de Chakra UI
-import {
-  Alert,
-  AlertIcon,
-  AlertTitle,
-  AlertDescription,
-  CloseButton,
-} from "@chakra-ui/react";
 
 export default function UseClient() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showErrorAlert, setShowErrorAlert] = useState(false);
+  const [redirectToAdmin, setRedirectToAdmin] = useState(false);
 
   const handleLogin = () => {
-    // Datos del usuario para iniciar sesión
     const userData = {
       email: email,
       password: password,
     };
 
-    // URL de la API de inicio de sesión
     const loginUrl = "https://www.pcexpressbcs.com.mx/api/login";
 
-    // Realizar la solicitud de inicio de sesión
     axios
       .post(loginUrl, userData)
       .then((response) => {
-        // La solicitud de inicio de sesión se completó exitosamente
-        console.log("Inicio de sesión exitoso");
-        console.log("Datos del usuario:", response.data);
-
-        // Guardar la información del usuario en el localStorage
         localStorage.setItem("userData", JSON.stringify(response.data));
-
-        // Redirige a otra página después del inicio de sesión exitoso
-        window.location.href = "/adminDevices";
+        setRedirectToAdmin(true);
       })
       .catch((error) => {
-        // Se produjo un error durante la solicitud de inicio de sesión
         console.error("Error de inicio de sesión:", error);
-        // Muestra la alerta de error
         setShowErrorAlert(true);
       });
   };
 
-  // Función para cerrar la alerta de error
   const closeErrorAlert = () => {
     setShowErrorAlert(false);
   };
 
   return (
     <ChakraProvider>
+      {redirectToAdmin && <Navigate to="/adminDevices" />}
       <Stack minH={"100vh"} direction={{ base: "column", md: "row" }}>
         <Flex p={8} flex={1} align={"center"} justify={"center"}>
           <Stack spacing={4} w={"full"} maxW={"md"}>
@@ -117,22 +98,24 @@ export default function UseClient() {
           justifyContent="center"
           zIndex="9999"
         >
-          <Alert
-            status="error"
-            variant="subtle"
-            flexDirection="column"
-            textAlign="center"
-            width="100%"
-            maxW="400px"
-          >
-            <AlertIcon boxSize="40px" mx="auto" mb={4} />
-            <AlertTitle>Error de inicio de sesión</AlertTitle>
-            <AlertDescription>
-              El correo electrónico o la contraseña son incorrectos. Por favor,
-              inténtalo de nuevo.
-            </AlertDescription>
-            <CloseButton mt={4} onClick={closeErrorAlert} />
-          </Alert>
+          {
+            <Alert
+              status="error"
+              variant="subtle"
+              flexDirection="column"
+              textAlign="center"
+              width="100%"
+              maxW="400px"
+            >
+              <AlertIcon boxSize="40px" mx="auto" mb={4} />
+              <AlertTitle>Error de inicio de sesión</AlertTitle>
+              <AlertDescription>
+                El correo electrónico o la contraseña son incorrectos. Por
+                favor, inténtalo de nuevo.
+              </AlertDescription>
+              <CloseButton mt={4} onClick={closeErrorAlert} />
+            </Alert>
+          }
         </Flex>
       )}
     </ChakraProvider>

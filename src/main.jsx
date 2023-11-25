@@ -9,9 +9,9 @@ import Pruebas from "./pruebas.jsx";
 import DeviceDetail from "./DeviceDetail.jsx";
 import NoAuth from "./NoAuth.jsx";
 
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createHashRouter, RouterProvider } from "react-router-dom";
 
-const router = createBrowserRouter([
+const router = createHashRouter([
   {
     path: "/hola",
     element: <Hola></Hola>,
@@ -29,7 +29,7 @@ const router = createBrowserRouter([
     element: <Login></Login>,
   },
   {
-    path: "#/adminDevices",
+    path: "/adminDevices",
     element: <Index></Index>,
   },
   {
