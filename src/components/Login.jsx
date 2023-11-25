@@ -12,6 +12,13 @@ import {
 import { Flex } from "@chakra-ui/layout";
 import { Navigate } from "react-router-dom";
 import axios from "axios";
+import {
+  Alert,
+  AlertIcon,
+  AlertTitle,
+  AlertDescription,
+  CloseButton,
+} from "@chakra-ui/react";
 
 export default function UseClient() {
   const [email, setEmail] = useState("");
