@@ -48,7 +48,7 @@ export default function UseClient() {
         localStorage.setItem("userData", JSON.stringify(response.data));
 
         // Redirige a otra página después del inicio de sesión exitoso
-        window.location.href = "/adminDevices";
+        window.location.href = "#/adminDevices";
       })
       .catch((error) => {
         // Se produjo un error durante la solicitud de inicio de sesión
