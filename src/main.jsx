@@ -21,7 +21,7 @@ const router = createBrowserRouter([
     element: <NoAuth></NoAuth>,
   },
   {
-    path: "#/app",
+    path: "/app",
     element: <App></App>,
   },
   {
@@ -37,7 +37,7 @@ const router = createBrowserRouter([
     element: <Pruebas></Pruebas>,
   },
   {
-    path: "#/devices/:id",
+    path: "/devices/:id",
     element: <DeviceDetail />,
   },
 ]);
