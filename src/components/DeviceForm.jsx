@@ -33,7 +33,7 @@ const DeviceForm = ({ onClose }) => {
 
     // Obtener la lista de técnicos
     axios
-      .get("https://www.pcexpressbcs.com.mx/api/users")
+      .get("https://www.pcexpressbcs.com.mx/api/catalog/users")
       .then((response) => {
         setTechnicians(response.data.data);
       })
