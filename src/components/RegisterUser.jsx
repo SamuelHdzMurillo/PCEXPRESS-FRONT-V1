@@ -33,7 +33,9 @@ export default function UserRegistrationModal({ openButton }) {
     // Hacer la petición GET para obtener la lista de correos existentes
     const fetchExistingEmails = async () => {
       try {
-        const response = await axios.get("http://143.198.148.125/api/users");
+        const response = await axios.get(
+          "https://www.pcexpressbcs.com.mx/api/users"
+        );
         const usersData = response.data;
 
         const emails = usersData.data.map((user) => user.email);
@@ -58,7 +60,9 @@ export default function UserRegistrationModal({ openButton }) {
     }
 
     if (existingEmails.includes(email)) {
-      setRegisterError("Este correo ya está registrado. Por favor, utiliza otro.");
+      setRegisterError(
+        "Este correo ya está registrado. Por favor, utiliza otro."
+      );
       return false;
     }
 
@@ -74,11 +78,14 @@ export default function UserRegistrationModal({ openButton }) {
 
     try {
       // Enviar solicitud POST a la API
-      const response = await axios.post("http://143.198.148.125/api/users", {
-        name: userName,
-        email,
-        password,
-      });
+      const response = await axios.post(
+        "https://www.pcexpressbcs.com.mx/api/users",
+        {
+          name: userName,
+          email,
+          password,
+        }
+      );
 
       if (response.status === 200 || 201) {
         // Registro exitoso
@@ -131,7 +138,9 @@ export default function UserRegistrationModal({ openButton }) {
                 <AlertTitle mt={4} mb={1} fontSize="lg">
                   ¡Registro exitoso!
                 </AlertTitle>
-                <AlertDescription>Clic en cerrar para continuar</AlertDescription>
+                <AlertDescription>
+                  Clic en cerrar para continuar
+                </AlertDescription>
                 <Button mt={4} onClick={handleCloseAlert}>
                   Cerrar
                 </Button>

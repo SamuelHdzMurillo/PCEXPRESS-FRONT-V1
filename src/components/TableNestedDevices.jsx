@@ -11,7 +11,7 @@ const App = () => {
   const [expandedRowKeys, setExpandedRowKeys] = useState([]);
 
   useEffect(() => {
-    fetch("http://143.198.148.125/api/owners")
+    fetch("https://www.pcexpressbcs.com.mx/api/owners")
       .then((response) => response.json())
       .then((data) => setClientsData(data))
       .catch((error) => console.error("Error fetching data:", error));

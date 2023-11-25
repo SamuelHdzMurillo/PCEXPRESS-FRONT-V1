@@ -29,7 +29,7 @@ const DeviceDetails = () => {
   const openTimelineModal = async (deviceId) => {
     try {
       const response = await axios.get(
-        `http://143.198.148.125/api/devices/${deviceId}`
+        `https://www.pcexpressbcs.com.mx/api/devices/${deviceId}`
       );
       setSelectedDeviceUpdates(response.data.updates);
       setIsTimelineModalOpen(true);
@@ -42,7 +42,7 @@ const DeviceDetails = () => {
   useEffect(() => {
     // Realiza una solicitud GET para obtener los datos del dispositivo según el ID
     axios
-      .get(`http://143.198.148.125/api/devices/${id}`)
+      .get(`https://www.pcexpressbcs.com.mx/api/devices/${id}`)
       .then((response) => {
         setDeviceData(response.data);
       })

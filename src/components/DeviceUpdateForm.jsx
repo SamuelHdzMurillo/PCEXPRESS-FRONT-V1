@@ -34,7 +34,7 @@ const DeviceUpdateForm = ({ deviceId, modalVisible, setModalVisible }) => {
       }
 
       const response = await axios.post(
-        "http://143.198.148.125/api/updates",
+        "https://www.pcexpressbcs.com.mx/api/updates",
         formData,
         {
           headers: {

@@ -23,7 +23,7 @@ const DeviceForm = ({ onClose }) => {
   const refreshOwnersAndTechnicians = () => {
     // Obtener la lista de propietarios
     axios
-      .get("http://143.198.148.125/api/catalog/owners")
+      .get("https://www.pcexpressbcs.com.mx/api/catalog/owners")
       .then((response) => {
         setOwners(response.data.data);
       })
@@ -33,7 +33,7 @@ const DeviceForm = ({ onClose }) => {
 
     // Obtener la lista de técnicos
     axios
-      .get("http://143.198.148.125/api/catalog/users")
+      .get("https://www.pcexpressbcs.com.mx/api/users")
       .then((response) => {
         setTechnicians(response.data.data);
       })
@@ -91,7 +91,7 @@ const DeviceForm = ({ onClose }) => {
 
     try {
       const response = await axios.post(
-        "http://143.198.148.125/api/devices",
+        "https://www.pcexpressbcs.com.mx/api/devices",
         formData,
         {
           headers: {

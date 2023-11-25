@@ -30,7 +30,9 @@ const OwnerForm = ({ isModalVisible, setIsModalVisible }) => {
 
   const onFinish = async () => {
     try {
-      const response = await axios.get("http://143.198.148.125/api/owners");
+      const response = await axios.get(
+        "https://www.pcexpressbcs.com.mx/api/owners"
+      );
       const ownersData = response.data; // Datos de propietarios obtenidos
 
       const validatedValues = await form.validateFields();
@@ -61,7 +63,7 @@ const OwnerForm = ({ isModalVisible, setIsModalVisible }) => {
       // Si no hay duplicados, proceder con el envío de datos
       const formData = sendOwnerData(validatedValues);
       const postResponse = await axios.post(
-        "http://143.198.148.125/api/owners",
+        "https://www.pcexpressbcs.com.mx/api/owners",
         formData,
         {
           headers: {

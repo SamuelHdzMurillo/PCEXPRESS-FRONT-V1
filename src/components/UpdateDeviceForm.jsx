@@ -20,7 +20,7 @@ const EditDeviceModal = ({ isOpen, onClose, deviceId }) => {
   const refreshOwnersAndTechnicians = () => {
     // Obtener la lista de propietarios
     axios
-      .get("http://143.198.148.125/api/catalog/owners")
+      .get("https://www.pcexpressbcs.com.mx/api/catalog/owners")
       .then((response) => {
         setOwners(response.data.data);
       })
@@ -30,7 +30,7 @@ const EditDeviceModal = ({ isOpen, onClose, deviceId }) => {
 
     // Obtener la lista de técnicos
     axios
-      .get("http://143.198.148.125/api/catalog/users")
+      .get("https://www.pcexpressbcs.com.mx/api/catalog/users")
       .then((response) => {
         setTechnicians(response.data.data);
       })
@@ -42,7 +42,7 @@ const EditDeviceModal = ({ isOpen, onClose, deviceId }) => {
   useEffect(() => {
     refreshOwnersAndTechnicians();
     axios
-      .get(`http://143.198.148.125/api/devices/${deviceId}`)
+      .get(`https://www.pcexpressbcs.com.mx/api/devices/${deviceId}`)
       .then((response) => {
         const data = response.data;
         setDeviceData({
@@ -70,7 +70,7 @@ const EditDeviceModal = ({ isOpen, onClose, deviceId }) => {
   const handleFormSubmit = (values) => {
     // Hacer una solicitud PUT para actualizar los datos del dispositivo con los valores del formulario.
     axios
-      .put(`http://143.198.148.125/api/devices/${deviceId}`, values)
+      .put(`https://www.pcexpressbcs.com.mx/api/devices/${deviceId}`, values)
       .then((response) => {
         console.log("Dispositivo actualizado con éxito");
         message.success("Datos enviados exitosamente");

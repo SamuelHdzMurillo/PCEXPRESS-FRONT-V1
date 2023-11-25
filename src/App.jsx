@@ -36,7 +36,7 @@ const DeviceList = () => {
   const openTimelineModal = async (deviceId) => {
     try {
       const response = await axios.get(
-        `http://143.198.148.125/api/devices/${deviceId}`
+        `https://www.pcexpressbcs.com.mx/api/devices/${deviceId}`
       );
       setSelectedDeviceUpdates(response.data.updates);
       setIsTimelineModalOpen(true);
@@ -52,7 +52,9 @@ const DeviceList = () => {
   useEffect(() => {
     const fetchDevices = async () => {
       try {
-        const response = await axios.get("http://143.198.148.125/api/devices");
+        const response = await axios.get(
+          "https://www.pcexpressbcs.com.mx/api/devices"
+        );
         setDevices(response.data);
         setLoading(false);
       } catch (error) {
@@ -99,7 +101,7 @@ const DeviceList = () => {
         </button>
         <ul className={`nav-links ${showMenu ? "show" : ""}`}>
           <li>
-            <a href="http://www.pcexpressbcs.com.mx/">Servicios</a>
+            <a href="https://www.pcexpressbcs.com.mx/">Servicios</a>
           </li>
           <li>
             <a href="https://www.facebook.com/profile.php?id=100076056407761">

@@ -17,7 +17,7 @@ const UsersTable = () => {
   const [showRegistrationModal, setShowRegistrationModal] = useState(false);
 
   useEffect(() => {
-    fetch("http://143.198.148.125/api/users")
+    fetch("https://www.pcexpressbcs.com.mx/api/users")
       .then((response) => response.json())
       .then((result) => {
         if (Array.isArray(result.data)) {
@@ -32,7 +32,7 @@ const UsersTable = () => {
   }, []);
 
   const handleDelete = (userId) => {
-    fetch(`http://143.198.148.125/api/users/${userId}`, {
+    fetch(`https://www.pcexpressbcs.com.mx/api/users/${userId}`, {
       method: "DELETE",
     })
       .then((response) => {
