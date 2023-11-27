@@ -48,14 +48,17 @@ const DataTable = ({ onEdit }) => {
   const closeEditModal = () => {
     setSelectedDeviceId(null);
     setIsEditModalOpen(false);
+    fetchData();
   };
 
   const closeForm = () => {
     setIsFormVisible(false);
+    fetchData();
   };
 
   const showModal = () => {
     setIsModalVisible(true);
+    fetchData();
   };
 
   const onDelete = async (deviceId) => {
@@ -80,6 +83,7 @@ const DataTable = ({ onEdit }) => {
 
   const handleCancel = () => {
     setIsModalVisible(false);
+    fetchData();
   };
 
   const [pagination, setPagination] = useState({
@@ -109,7 +113,8 @@ const DataTable = ({ onEdit }) => {
   };
   const handleAddUpdate = (record) => {
     setSelectedDeviceId(record.id); // Almacena el ID del dispositivo seleccionado
-    setIsUpdateModalVisible(true); // Abre el modal de actualización
+    setIsUpdateModalVisible(true);
+    fetchData(); // Abre el modal de actualización
   };
 
   const smsMenu = (record) => (

@@ -7,7 +7,6 @@ import {
 } from "@ant-design/icons";
 import Highlighter from "react-highlight-words";
 import UserRegistrationModal from "./RegisterUser.jsx"; // Ajusta la ruta según la ubicación del archivo UserRegistrationModal.js
-
 import moment from "moment";
 
 const UsersTable = () => {
@@ -17,6 +16,10 @@ const UsersTable = () => {
   const [showRegistrationModal, setShowRegistrationModal] = useState(false);
 
   useEffect(() => {
+    fetchUsersData();
+  }, []);
+
+  const fetchUsersData = () => {
     fetch("https://www.pcexpressbcs.com.mx/api/users")
       .then((response) => response.json())
       .then((result) => {
@@ -29,7 +32,7 @@ const UsersTable = () => {
       .catch((error) => {
         console.error("Ha ocurrido un error al obtener los datos:", error);
       });
-  }, []);
+  };
 
   const handleDelete = (userId) => {
     fetch(`https://www.pcexpressbcs.com.mx/api/users/${userId}`, {
@@ -172,6 +175,10 @@ const UsersTable = () => {
     },
   ];
 
+  const handleUserAdded = () => {
+    fetchUsersData(); // Actualiza los datos de usuarios después de agregar uno nuevo
+  };
+
   return (
     <div>
       <UserRegistrationModal
@@ -182,6 +189,7 @@ const UsersTable = () => {
             onClick={() => setShowRegistrationModal(true)}
           />
         }
+        onUserAdded={handleUserAdded} // Pasa la función como prop
       />
       {/* Puedes personalizar el botón de apertura según tus necesidades */}
       <Table dataSource={userData} columns={columns} rowKey="id" />
