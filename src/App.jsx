@@ -109,7 +109,7 @@ const DeviceList = () => {
             </a>
           </li>
           <li>
-            <a href="/Login">
+            <a href="#/">
               <button className="btn-iniciar-sesion">Iniciar Sesión</button>
             </a>
           </li>
