@@ -21,6 +21,7 @@ import {
   EditFilled,
   MessageFilled,
 } from "@ant-design/icons";
+
 import DeviceForm from "./DeviceForm";
 import DeviceUpdateForm from "./DeviceUpdateForm";
 import EditDeviceModal from "./UpdateDeviceForm";

@@ -4,6 +4,7 @@ import { Heading } from "@chakra-ui/react";
 import UserTable from "./TableNestedDevices.jsx"; // Tabla de usuarios
 import DeviceTable from "./Table.jsx"; // Tabla de dispositivos
 import TechTable from "./TableUser.jsx"; // Tabla de técnicos
+
 import {
   UserOutlined,
   ToolOutlined,
@@ -26,12 +27,12 @@ const App = () => {
     // Limpiar el token del localStorage al cerrar sesión
     localStorage.removeItem("userData");
     // Redirigir a la página de inicio de sesión
-    window.location.href = "/login";
+    window.location.href = "#/";
   };
 
   const handleItemClick = (key) => {
     if (key === "1") {
-      window.location.href = "/app";
+      window.location.href = "#/app";
     } else if (key === "2") {
       setActiveTab("users"); // Cambiar a la pestaña de usuarios
     } else if (key === "3") {
@@ -50,7 +51,7 @@ const App = () => {
         <Menu
           theme="dark"
           mode="inline"
-          defaultSelectedKeys={["3"]}
+          defaultSelectedKeys={["0"]}
           onClick={({ key }) => handleItemClick(key)}
           items={[
             {
@@ -67,7 +68,7 @@ const App = () => {
             {
               key: "2",
               icon: <UserOutlined />,
-              label: "Usuarios",
+              label: "Clientes",
             },
             {
               key: "3",

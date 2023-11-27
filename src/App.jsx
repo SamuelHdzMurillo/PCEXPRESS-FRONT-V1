@@ -124,9 +124,7 @@ const DeviceList = () => {
             value={searchQuery}
             onChange={handleSearch}
           />
-          <InputRightElement pointerEvents="none">
-            {/* You can add an icon here if you want */}
-          </InputRightElement>
+          <InputRightElement pointerEvents="none"></InputRightElement>
         </InputGroup>
       </Box>
 
