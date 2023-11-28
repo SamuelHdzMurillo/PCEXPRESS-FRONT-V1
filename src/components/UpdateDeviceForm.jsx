@@ -14,7 +14,9 @@ const EditDeviceModal = ({ isOpen, onClose, deviceId }) => {
     damage: "",
     accessories: "",
     technican: "",
+    serial: "",
     owner_id: "",
+    img: "",
   });
 
   const refreshOwnersAndTechnicians = () => {
@@ -54,7 +56,9 @@ const EditDeviceModal = ({ isOpen, onClose, deviceId }) => {
           technican: data.technican,
           owner_id: data.owner_id,
           model: data.model,
+          serial: data.serial,
           observations: data.observations,
+          img: data.img,
         });
       })
       .catch((error) => {
@@ -70,7 +74,7 @@ const EditDeviceModal = ({ isOpen, onClose, deviceId }) => {
   const handleFormSubmit = (values) => {
     // Hacer una solicitud PUT para actualizar los datos del dispositivo con los valores del formulario.
     axios
-      .put(`https://www.pcexpressbcs.com.mx/api/devices/${deviceId}`, values)
+      .post(`https://www.pcexpressbcs.com.mx/api/devices/${deviceId}`, values)
       .then((response) => {
         console.log("Dispositivo actualizado con éxito");
         message.success("Datos enviados exitosamente");
@@ -121,6 +125,9 @@ const EditDeviceModal = ({ isOpen, onClose, deviceId }) => {
         <Form.Item name="accessories" label="Accesorios">
           <Input placeholder="Accesorios" />
         </Form.Item>
+        <Form.Item name="serial" label="Serial">
+          <Input placeholder="serial" />
+        </Form.Item>
         <Form.Item name="technican" label="Técnico">
           <Select>
             {technicians.map((technician) => (
@@ -140,6 +147,20 @@ const EditDeviceModal = ({ isOpen, onClose, deviceId }) => {
           </Select>
         </Form.Item>
         <Form.Item>
+          <Form.Item
+            label="Imagen"
+            name="img"
+            valuePropName="fileList"
+            rules={[{ required: true, message: "Por favor ingrese la marca" }]}
+          >
+            <input
+              type="file"
+              accept=".jpg, .png, .jpeg"
+              onChange={(e) =>
+                form.setFieldsValue({ img: [e.target.files[0]] })
+              }
+            />
+          </Form.Item>
           <Button type="primary" htmlType="submit">
             Guardar Cambios
           </Button>

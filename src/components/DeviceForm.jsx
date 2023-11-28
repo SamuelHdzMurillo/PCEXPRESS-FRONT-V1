@@ -81,6 +81,7 @@ const DeviceForm = ({ onClose }) => {
     formData.append("owner_id", values.owner_id);
     formData.append("model", values.model);
     formData.append("observations", values.observations);
+    formData.append("serial", values.serial);
     formData.append("img", values.img[0]);
 
     return formData;
