@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { Badge, Table, Tag, Input, Button } from "antd";
-import { SearchOutlined } from "@ant-design/icons";
+import { Badge, Table, Tag, Input, Button, Space } from "antd";
+import { SearchOutlined, PlusCircleFilled } from "@ant-design/icons";
 import Highlighter from "react-highlight-words";
 import moment from "moment";
+import EditOwnerModal from "./UpdateOwner.jsx";
 
 const App = () => {
   const [clientsData, setClientsData] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
   const [expandedRowKeys, setExpandedRowKeys] = useState([]);
+  const [isEditOwnerModalVisible, setIsEditOwnerModalVisible] = useState(false);
+  const [selectedOwnerId, setSelectedOwnerId] = useState(null);
 
   useEffect(() => {
     fetch("https://www.pcexpressbcs.com.mx/api/owners")
@@ -19,6 +22,15 @@ const App = () => {
 
   const handleExpand = (expanded, record) => {
     setExpandedRowKeys(expanded ? [record.key] : []);
+  };
+
+  const handleOpenEditModal = (ownerId) => {
+    setSelectedOwnerId(ownerId);
+    setIsEditOwnerModalVisible(true);
+  };
+
+  const handleCloseEditModal = () => {
+    setIsEditOwnerModalVisible(false);
   };
 
   const expandedRowRender = (record) => {
@@ -183,6 +195,22 @@ const App = () => {
       key: "email",
       ...getColumnSearchProps("email"),
     },
+    {
+      title: "Acciones",
+      render: (_, record) => (
+        <Space size="middle">
+          <Button
+            style={{
+              background: "#96be25",
+              borderColor: "#96be25",
+              color: "white",
+            }}
+            icon={<PlusCircleFilled />}
+            onClick={() => handleOpenEditModal(record.id)}
+          />
+        </Space>
+      ),
+    },
   ];
 
   return (
@@ -199,6 +227,12 @@ const App = () => {
           ...client,
           key: index.toString(),
         }))}
+      />
+
+      <EditOwnerModal
+        isOpen={isEditOwnerModalVisible}
+        setIsOpen={handleCloseEditModal}
+        ownerId={selectedOwnerId}
       />
     </div>
   );
