@@ -72,7 +72,7 @@ const DeviceForm = ({ onClose }) => {
     }
 
     const formData = new FormData();
-    formData.append("state", values.state);
+    formData.append("state", "Recibido");
     formData.append("device_type", values.device_type);
     formData.append("brand", values.brand);
     formData.append("damage", values.damage);
@@ -129,20 +129,6 @@ const DeviceForm = ({ onClose }) => {
           footer={null}
         >
           <Form.Item
-            label="Estado"
-            name="state"
-            rules={[
-              { required: true, message: "Por favor seleccione el estado" },
-            ]}
-          >
-            <Select>
-              <Select.Option value="Recibido">Recibido</Select.Option>
-              <Select.Option value="En Proceso">En Proceso</Select.Option>
-              <Select.Option value="Terminado">Terminado</Select.Option>
-            </Select>
-          </Form.Item>
-
-          <Form.Item
             label="Tipo de Dispositivo"
             name="device_type"
             rules={[
@@ -185,6 +171,16 @@ const DeviceForm = ({ onClose }) => {
             label="Daño"
             name="damage"
             rules={[{ required: true, message: "Por favor ingrese el daño" }]}
+          >
+            <Input />
+          </Form.Item>
+
+          <Form.Item
+            label="Serial"
+            name="serial"
+            rules={[
+              { required: true, message: "Por favor ingrese el serial " },
+            ]}
           >
             <Input />
           </Form.Item>
