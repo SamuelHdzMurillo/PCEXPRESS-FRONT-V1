@@ -73,15 +73,15 @@ const DeviceForm = ({ onClose }) => {
 
     const formData = new FormData();
     formData.append("state", "Recibido");
-    formData.append("device_type", values.device_type);
-    formData.append("brand", values.brand);
-    formData.append("damage", values.damage);
-    formData.append("accesories", values.accesories);
+    formData.append("device_type", values.device_type).toUpperCase();
+    formData.append("brand", values.brand.toUpperCase());
+    formData.append("damage", values.damage.toUpperCase());
+    formData.append("accesories", values.accesories.toUpperCase());
     formData.append("technican", values.technican);
     formData.append("owner_id", values.owner_id);
-    formData.append("model", values.model);
-    formData.append("observations", values.observations);
-    formData.append("serial", values.serial);
+    formData.append("model", values.model.toUpperCase());
+    formData.append("observations", values.observations.toUpperCase());
+    formData.append("serial", values.serial.toUpperCase());
     formData.append("img", values.img[0]);
 
     return formData;

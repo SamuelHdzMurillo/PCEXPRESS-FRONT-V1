@@ -49,15 +49,15 @@ const EditDeviceModal = ({ isOpen, onClose, deviceId }) => {
         const data = response.data;
         setDeviceData({
           state: data.state,
-          device_type: data.device_type,
-          brand: data.brand,
-          damage: data.damage,
-          accessories: data.accesories,
+          device_type: data.device_type.toUpperCase(),
+          brand: data.brand.toUpperCase(),
+          damage: data.damage.toUpperCase(),
+          accessories: data.accesories.toUpperCase(),
           technican: data.technican,
           owner_id: data.owner_id,
-          model: data.model,
-          serial: data.serial,
-          observations: data.observations,
+          model: data.model.toUpperCase(),
+          serial: data.serial.toUpperCase(),
+          observations: data.observations.toUpperCase(),
           img: data.img,
         });
       })
