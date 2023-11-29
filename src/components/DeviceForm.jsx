@@ -73,7 +73,7 @@ const DeviceForm = ({ onClose }) => {
 
     const formData = new FormData();
     formData.append("state", "Recibido");
-    formData.append("device_type", values.device_type).toUpperCase();
+    formData.append("device_type", values.device_type.toUpperCase());
     formData.append("brand", values.brand.toUpperCase());
     formData.append("damage", values.damage.toUpperCase());
     formData.append("accesories", values.accesories.toUpperCase());

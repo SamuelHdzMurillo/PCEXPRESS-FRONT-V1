@@ -99,6 +99,7 @@ const EditDeviceModal = ({ isOpen, onClose, deviceId }) => {
             <Select.Option value="Recibido">Recibido</Select.Option>
             <Select.Option value="En Proceso">En Proceso</Select.Option>
             <Select.Option value="Terminado">Terminado</Select.Option>
+            <Select.Option value="Entregado">Entregado</Select.Option>
           </Select>
         </Form.Item>
         <Form.Item name="device_type" label="Tipo de Dispositivo">
