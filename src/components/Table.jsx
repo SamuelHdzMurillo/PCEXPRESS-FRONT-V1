@@ -13,6 +13,7 @@ import {
   Menu,
   Tag,
   message,
+  Select,
 } from "antd";
 import {
   PlusCircleFilled,
@@ -31,6 +32,7 @@ import "moment/locale/es"; // Importa la localización que desees, por ejemplo, 
 
 const DataTable = ({ onEdit }) => {
   const { Search } = Input;
+  const { Option } = Select;
   const [data, setData] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -38,6 +40,7 @@ const DataTable = ({ onEdit }) => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isUpdateModalVisible, setIsUpdateModalVisible] = useState(false); // Nuevo estado para el modal de actualización
   const [selectedDeviceId, setSelectedDeviceId] = useState(null); // Nuevo estado para almacenar el ID del dispositivo seleccionado
+  const [selectedOption, setSelectedOption] = useState("");
   const openForm = () => {
     setIsFormVisible(true);
   };
@@ -165,7 +168,16 @@ const DataTable = ({ onEdit }) => {
       dataIndex: "id",
       key: "name",
       render: (text, record) => (
-        <Link to={`/devices/${record.id}`}>{record.id}</Link>
+        <span>
+          <Link to={`/devices/${record.id}`}>{record.id}</Link>
+          <Button
+            type="primary"
+            shape="circle"
+            title="Editar"
+            onClick={() => handleEdit(record.id)}
+            style={{ marginLeft: "8px" }}
+          />
+        </span>
       ),
     },
     {
@@ -189,6 +201,9 @@ const DataTable = ({ onEdit }) => {
             break;
           case "Terminado":
             color = "green";
+            break;
+          case "Entregado":
+            color = "blue";
             break;
           default:
             color = "default";
@@ -273,6 +288,9 @@ const DataTable = ({ onEdit }) => {
   const handleTableChange = (pagination) => {
     setPagination(pagination);
   };
+  const handleSelectChange = (value) => {
+    setSelectedOption(value); // Actualiza el estado con el valor seleccionado del Select
+  };
   const handleAddDevice = (record) => {
     console.log("ID DEL DISPOSITIVO:", record.id);
   };
@@ -317,17 +335,32 @@ const DataTable = ({ onEdit }) => {
   };
 
   const filteredData = data.filter((item) => {
-    // Filtra en base a la búsqueda en todas las propiedades del objeto
-    return Object.values(item).some((property) => {
-      if (typeof property === "string") {
-        return property.toLowerCase().includes(searchQuery.toLowerCase());
-      }
-      return false;
-    });
+    // Filtra en base a la búsqueda y al valor seleccionado del Select
+    return (
+      (selectedOption === "" || item.state === selectedOption) &&
+      Object.values(item).some((property) => {
+        if (typeof property === "string") {
+          return property.toLowerCase().includes(searchQuery.toLowerCase());
+        }
+        return false;
+      })
+    );
   });
 
   return (
     <div>
+      <Select
+        placeholder="Filtrar por Estado"
+        style={{ width: 200, marginBottom: 16, marginLeft: 8 }}
+        onChange={handleSelectChange}
+        value={selectedOption}
+      >
+        <Option value="Recibido">Recibido</Option>
+        <Option value="Terminado">Terminado</Option>
+        <Option value="En Proceso">En Proceso</Option>
+        <Option value="Entregado">Entregado</Option>
+        <Option value="">vacio</Option>
+      </Select>
       <Search
         placeholder="Buscar en la tabla"
         style={{ width: 300, marginBottom: 16 }}
