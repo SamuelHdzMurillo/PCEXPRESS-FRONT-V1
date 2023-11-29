@@ -132,7 +132,8 @@ const OwnerForm = ({ isModalVisible, setIsModalVisible }) => {
               },
               {
                 pattern: /^(\+)?[0-9]+$/, // Permite un signo '+' al principio
-                message: "Ingresa un número de teléfono válido.",
+                message:
+                  "Ingresa un número de teléfono válido o Activa el Teclado Numerico",
               },
             ]}
           >
