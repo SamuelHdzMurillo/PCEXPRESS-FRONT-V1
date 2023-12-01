@@ -58,7 +58,7 @@ const EditDeviceModal = ({ isOpen, onClose, deviceId }) => {
           model: data.model.toUpperCase(),
           serial: data.serial.toUpperCase(),
           observations: data.observations.toUpperCase(),
-          img: data.img,
+          img: data.imgUrl,
         });
       })
       .catch((error) => {
@@ -72,9 +72,29 @@ const EditDeviceModal = ({ isOpen, onClose, deviceId }) => {
   }, [deviceData, form]);
 
   const handleFormSubmit = (values) => {
-    // Hacer una solicitud PUT para actualizar los datos del dispositivo con los valores del formulario.
+    const formData = new FormData();
+
+    // Agregar los datos del formulario al objeto FormData
+    Object.keys(values).forEach((key) => {
+      formData.append(key, values[key]);
+    });
+
+    // Agregar la imagen al objeto FormData
+    if (deviceData.img) {
+      formData.append("img", dataURItoBlob(deviceData.img));
+    }
+
+    // Hacer la solicitud POST con axios utilizando FormData
     axios
-      .post(`https://www.pcexpressbcs.com.mx/api/devices/${deviceId}`, values)
+      .post(
+        `https://www.pcexpressbcs.com.mx/api/devices/${deviceId}`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      )
       .then((response) => {
         console.log("Dispositivo actualizado con éxito");
         message.success("Datos enviados exitosamente");
@@ -85,6 +105,19 @@ const EditDeviceModal = ({ isOpen, onClose, deviceId }) => {
         message.error("Error al enviar los datos");
       });
   };
+
+  // Función para convertir una URL de datos (data URL) a Blob
+  function dataURItoBlob(dataURI) {
+    const byteString = atob(dataURI.split(",")[1]);
+    const mimeString = dataURI.split(",")[0].split(":")[1].split(";")[0];
+    const ab = new ArrayBuffer(byteString.length);
+    const ia = new Uint8Array(ab);
+    for (let i = 0; i < byteString.length; i++) {
+      ia[i] = byteString.charCodeAt(i);
+    }
+    const blob = new Blob([ab], { type: mimeString });
+    return blob;
+  }
 
   return (
     <Modal
@@ -152,16 +185,26 @@ const EditDeviceModal = ({ isOpen, onClose, deviceId }) => {
             label="Imagen"
             name="img"
             valuePropName="fileList"
-            rules={[{ required: true, message: "Por favor ingrese la marca" }]}
+            rules={[
+              { required: false, message: "Por favor ingrese la imagen" },
+            ]}
           >
             <input
               type="file"
               accept=".jpg, .png, .jpeg"
-              onChange={(e) =>
-                form.setFieldsValue({ img: [e.target.files[0]] })
-              }
+              onChange={(e) => {
+                const file = e.target.files[0];
+                const reader = new FileReader();
+                reader.onloadend = () => {
+                  setDeviceData({ ...deviceData, img: reader.result });
+                };
+                if (file) {
+                  reader.readAsDataURL(file);
+                }
+              }}
             />
           </Form.Item>
+
           <Button type="primary" htmlType="submit">
             Guardar Cambios
           </Button>

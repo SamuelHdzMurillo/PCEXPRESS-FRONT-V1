@@ -101,15 +101,13 @@ const DataTable = ({ onEdit }) => {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get(
-        "https://www.pcexpressbcs.com.mx/api/devices",
-        {
-          params: {
-            page: pagination.current,
-            per_page: pagination.pageSize,
-          },
-        }
-      );
+      //CAMBIAR A RUTA NORMAL
+      const response = await axios.get("http://127.0.0.1:8000/api/devices", {
+        params: {
+          page: pagination.current,
+          per_page: pagination.pageSize,
+        },
+      });
       setData(response.data);
     } catch (error) {
       console.error("Error al obtener los datos de dispositivos:", error);
@@ -170,13 +168,6 @@ const DataTable = ({ onEdit }) => {
       render: (text, record) => (
         <span>
           <Link to={`/devices/${record.id}`}>{record.id}</Link>
-          <Button
-            type="primary"
-            shape="circle"
-            title="Editar"
-            onClick={() => handleEdit(record.id)}
-            style={{ marginLeft: "8px" }}
-          />
         </span>
       ),
     },
