@@ -127,7 +127,7 @@ const OwnerForm = ({ isModalVisible, setIsModalVisible }) => {
             name="phone_number"
             rules={[
               {
-                required: true,
+                required: false,
                 message: "Por favor ingresa un número de teléfono.",
               },
               {
