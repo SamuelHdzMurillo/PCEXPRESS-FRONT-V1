@@ -102,12 +102,15 @@ const DataTable = ({ onEdit }) => {
   const fetchData = async () => {
     try {
       //CAMBIAR A RUTA NORMAL
-      const response = await axios.get("http://127.0.0.1:8000/api/devices", {
-        params: {
-          page: pagination.current,
-          per_page: pagination.pageSize,
-        },
-      });
+      const response = await axios.get(
+        "https://www.pcexpressbcs.com.mx/api/devices",
+        {
+          params: {
+            page: pagination.current,
+            per_page: pagination.pageSize,
+          },
+        }
+      );
       setData(response.data);
     } catch (error) {
       console.error("Error al obtener los datos de dispositivos:", error);
