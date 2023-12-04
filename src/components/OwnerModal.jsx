@@ -23,7 +23,7 @@ const OwnerForm = ({ isModalVisible, setIsModalVisible }) => {
     const formData = new FormData();
     formData.append("name", values.name);
     formData.append("email", values.email);
-    formData.append("phone_number", values.phone_number);
+    formData.append("phone_number", "+52" + values.phone_number);
 
     return formData;
   };
