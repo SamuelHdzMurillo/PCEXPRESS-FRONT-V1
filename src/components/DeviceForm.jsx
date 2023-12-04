@@ -164,7 +164,11 @@ const DeviceForm = ({ onClose }) => {
             <Input />
           </Form.Item>
 
-          <Form.Item label="Observaciones" name="observations">
+          <Form.Item
+            label="Observaciones"
+            name="observations"
+            initialValue="No especificado"
+          >
             <Input />
           </Form.Item>
 
