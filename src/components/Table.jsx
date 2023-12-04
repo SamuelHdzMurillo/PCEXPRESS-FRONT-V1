@@ -101,7 +101,6 @@ const DataTable = ({ onEdit }) => {
 
   const fetchData = async () => {
     try {
-      //CAMBIAR A RUTA NORMAL
       const response = await axios.get(
         "https://www.pcexpressbcs.com.mx/api/devices",
         {
@@ -111,11 +110,22 @@ const DataTable = ({ onEdit }) => {
           },
         }
       );
+
+      // Define el orden de los estados
+      const stateOrder = ["Recibido", "En Proceso", "Terminado", "Entregado"];
+
+      // Ordena los datos en base al estado
+      response.data.sort((a, b) => {
+        return stateOrder.indexOf(a.state) - stateOrder.indexOf(b.state);
+      });
+
+      // Actualiza los datos ordenados en el estado "data"
       setData(response.data);
     } catch (error) {
       console.error("Error al obtener los datos de dispositivos:", error);
     }
   };
+
   const handleAddUpdate = (record) => {
     setSelectedDeviceId(record.id); // Almacena el ID del dispositivo seleccionado
     setIsUpdateModalVisible(true);
