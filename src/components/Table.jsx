@@ -332,12 +332,14 @@ const DataTable = ({ onEdit }) => {
     // Filtra en base a la búsqueda y al valor seleccionado del Select
     return (
       (selectedOption === "" || item.state === selectedOption) &&
-      Object.values(item).some((property) => {
-        if (typeof property === "string") {
-          return property.toLowerCase().includes(searchQuery.toLowerCase());
-        }
-        return false;
-      })
+      (item.owner.name.toLowerCase().includes(searchQuery.toLowerCase()) || // Considera el campo "Cliente" en la búsqueda
+        Object.values(item).some((property) => {
+          if (typeof property === "string" && property !== item.owner.name) {
+            // Asegúrate de no repetir la búsqueda para el campo "Cliente"
+            return property.toLowerCase().includes(searchQuery.toLowerCase());
+          }
+          return false;
+        }))
     );
   });
 
