@@ -58,7 +58,6 @@ const DataTable = ({ onEdit }) => {
   const closeForm = () => {
     setIsFormVisible(false);
     fetchData();
-    handlePrint(handlePrintLastData);
   };
 
   const showModal = () => {
