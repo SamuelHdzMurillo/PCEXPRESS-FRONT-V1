@@ -262,7 +262,7 @@ const DeviceForm = ({ onClose }) => {
           >
             <input
               type="file"
-              accept=".jpg, .png, .jpeg"
+              accept=".jpg, .png, .jpeg , .bmp , .tiff , .tif"
               onChange={(e) =>
                 form.setFieldsValue({ img: [e.target.files[0]] })
               }

@@ -233,6 +233,11 @@ const DataTable = ({ onEdit }) => {
       key: "damage",
     },
     {
+      title: "Modelo",
+      dataIndex: "model",
+      key: "model",
+    },
+    {
       title: "Accesorios",
       dataIndex: "accesories",
       key: "accesories",
