@@ -301,6 +301,16 @@ const DataTable = ({ onEdit }) => {
   const handleSearch = (value) => {
     setSearchQuery(value);
   };
+  const handlePrintLastDeviceTicket = async () => {
+    const lastDeviceId = await handlePrintLastData();
+    const lastDevice = data.find((device) => device.id === lastDeviceId);
+
+    if (lastDevice) {
+      handlePrint(lastDevice);
+    } else {
+      console.error("No se encontró el dispositivo más reciente.");
+    }
+  };
   const handlePrintLastData = async () => {
     try {
       if (data.length > 0) {
