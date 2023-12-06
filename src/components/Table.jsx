@@ -58,6 +58,7 @@ const DataTable = ({ onEdit }) => {
   const closeForm = () => {
     setIsFormVisible(false);
     fetchData();
+    handlePrint(handlePrintLastData);
   };
 
   const showModal = () => {
@@ -301,6 +302,25 @@ const DataTable = ({ onEdit }) => {
   const handleSearch = (value) => {
     setSearchQuery(value);
   };
+  const handlePrintLastData = async () => {
+    try {
+      if (data.length > 0) {
+        // Encuentra el registro con el ID más grande
+        const lastRecord = data.reduce((prev, current) =>
+          prev.id > current.id ? prev : current
+        );
+
+        return lastRecord.id; // Devuelve el número del último registro
+      } else {
+        console.error("No hay datos para imprimir");
+        return null; // Si no hay datos, devuelve null o algún valor indicativo
+      }
+    } catch (error) {
+      console.error("Error al obtener el último registro:", error);
+      return null; // Manejo de errores: devuelve null o algún valor indicativo
+    }
+  };
+
   const handlePrint = async (record) => {
     try {
       console.log("ID DEL DISPOSITIVO:", record.id);
@@ -317,19 +337,18 @@ const DataTable = ({ onEdit }) => {
         const blob = new Blob([response.data], { type: "application/pdf" });
         const url = window.URL.createObjectURL(blob);
 
-        // Crear un enlace de descarga
-        const a = document.createElement("a");
-        a.style.display = "none";
-        a.href = url;
-        a.download = `ticket_${record.id}.pdf`; // Nombre del archivo para la descarga
-        document.body.appendChild(a);
+        // Crear un objeto de ventana para cargar el PDF
+        const pdfWindow = window.open(url);
 
-        // Simular un clic en el enlace para iniciar la descarga
-        a.click();
+        // Esperar a que se cargue el PDF antes de imprimirlo
+        pdfWindow.onload = () => {
+          pdfWindow.print(); // Imprimir el PDF
+        };
 
-        // Limpiar después de la descarga
-        window.URL.revokeObjectURL(url);
-        document.body.removeChild(a);
+        // Limpiar después de imprimir
+        pdfWindow.onafterprint = () => {
+          window.URL.revokeObjectURL(url);
+        };
       } else {
         console.error("Error al imprimir: No se pudo obtener el PDF");
       }
@@ -365,7 +384,7 @@ const DataTable = ({ onEdit }) => {
         <Option value="Terminado">Terminado</Option>
         <Option value="En Proceso">En Proceso</Option>
         <Option value="Entregado">Entregado</Option>
-        <Option value="">vacio</Option>
+        <Option value="">-----SIN CATEGORIA----</Option>
       </Select>
       <Search
         placeholder="Buscar en la tabla"
