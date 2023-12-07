@@ -41,6 +41,7 @@ const DataTable = ({ onEdit }) => {
   const [isUpdateModalVisible, setIsUpdateModalVisible] = useState(false); // Nuevo estado para el modal de actualización
   const [selectedDeviceId, setSelectedDeviceId] = useState(null); // Nuevo estado para almacenar el ID del dispositivo seleccionado
   const [selectedOption, setSelectedOption] = useState("");
+  const [expandedRowKeys, setExpandedRowKeys] = useState([]);
   const openForm = () => {
     setIsFormVisible(true);
   };
@@ -294,6 +295,26 @@ const DataTable = ({ onEdit }) => {
     },
   ];
 
+  const expandedRowRender = (record) => {
+    const columns = [
+      {
+        title: "Título",
+        dataIndex: "title",
+        key: "title",
+      },
+      {
+        title: "Descripción",
+        dataIndex: "description",
+        key: "description",
+      },
+      // Puedes añadir más columnas aquí según tus necesidades
+    ];
+
+    return (
+      <Table columns={columns} dataSource={record.updates} pagination={false} />
+    );
+  };
+
   const handleTableChange = (pagination) => {
     setPagination(pagination);
   };
@@ -333,6 +354,11 @@ const DataTable = ({ onEdit }) => {
       console.error("Error al obtener el último registro:", error);
       return null; // Manejo de errores: devuelve null o algún valor indicativo
     }
+  };
+
+  const handleExpand = (expanded, record) => {
+    const keys = expanded ? [record.id] : [];
+    setExpandedRowKeys(keys);
   };
 
   const handlePrint = async (record) => {
@@ -412,12 +438,21 @@ const DataTable = ({ onEdit }) => {
           icon={<PlusCircleFilled />}
         ></Button>
       </Tooltip>
+      {/* ... (tu código existente) */}
 
       <Table
         dataSource={filteredData}
         columns={columns}
         pagination={pagination}
         onChange={handleTableChange}
+        expandable={{
+          expandedRowRender,
+          onExpand: handleExpand,
+          expandedRowKeys,
+          rowExpandable: (record) =>
+            record.updates && record.updates.length > 0, // Solo expandir si hay actualizaciones
+        }}
+        rowKey="id" // Definir la clave única de la fila, por ejemplo, "id"
       />
 
       <Modal
