@@ -21,6 +21,7 @@ import {
   DeleteFilled,
   EditFilled,
   MessageFilled,
+  PaperClipOutlined
 } from "@ant-design/icons";
 
 import DeviceForm from "./DeviceForm";
@@ -256,10 +257,18 @@ const DataTable = ({ onEdit }) => {
       key: "actions",
       render: (_, record) => (
         <Space size="middle">
+          <Tooltip title="Imprimir Ticket">
           <Button
             icon={<PrinterFilled />}
             onClick={() => handlePrint(record)}
           />
+          </Tooltip>
+          
+            <Tooltip title="Imprimir Orden de Servicio"><Button
+            icon={<PaperClipOutlined />}
+            onClick={() => handlePrintOrder(record)}
+          /></Tooltip>
+          
 
           <Dropdown overlay={smsMenu(record)}>
             <Button icon={<MessageFilled />}></Button>
@@ -368,6 +377,42 @@ const DataTable = ({ onEdit }) => {
       const response = await axios({
         method: "GET",
         url: `https://www.pcexpressbcs.com.mx/api/devices/${record.id}/ticket`,
+        responseType: "arraybuffer", // Importante: solicitar una respuesta en formato de array de bytes (binario)
+      });
+
+      // Verificar que la solicitud fue exitosa
+      if (response.status === 200) {
+        // Crear un Blob a partir de los datos del PDF
+        const blob = new Blob([response.data], { type: "application/pdf" });
+        const url = window.URL.createObjectURL(blob);
+
+        // Crear un objeto de ventana para cargar el PDF
+        const pdfWindow = window.open(url);
+
+        // Esperar a que se cargue el PDF antes de imprimirlo
+        pdfWindow.onload = () => {
+          pdfWindow.print(); // Imprimir el PDF
+        };
+
+        // Limpiar después de imprimir
+        pdfWindow.onafterprint = () => {
+          window.URL.revokeObjectURL(url);
+        };
+      } else {
+        console.error("Error al imprimir: No se pudo obtener el PDF");
+      }
+    } catch (error) {
+      console.error("Error al imprimir:", error);
+    }
+  };
+
+  const handlePrintOrder = async (record) => {
+    try {
+      console.log("ID DEL DISPOSITIVO:", record.id);
+      // Realiza una solicitud HTTP al endpoint con el ID del registro seleccionado
+      const response = await axios({
+        method: "GET",
+        url: `https://www.pcexpressbcs.com.mx/api/devices/${record.id}/ticketOrder`,
         responseType: "arraybuffer", // Importante: solicitar una respuesta en formato de array de bytes (binario)
       });
 
