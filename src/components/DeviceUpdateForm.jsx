@@ -49,7 +49,7 @@ const DeviceUpdateForm = ({ deviceId, modalVisible, setModalVisible }) => {
 
   return (
     <div>
-      <Button onClick={showModal}>Abrir Modal</Button>
+      <Button onClick={showModal}></Button>
       <Modal
         title="Formulario"
         visible={modalVisible}
