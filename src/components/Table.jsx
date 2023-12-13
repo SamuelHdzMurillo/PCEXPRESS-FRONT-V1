@@ -29,6 +29,7 @@ import EditDeviceModal from "./UpdateDeviceForm";
 import axios from "axios";
 import moment from "moment";
 import "moment/locale/es"; // Importa la localización que desees, por ejemplo, español
+import { space } from "@chakra-ui/react";
 
 const DataTable = ({ onEdit }) => {
   const { Search } = Input;
@@ -84,6 +85,30 @@ const DataTable = ({ onEdit }) => {
       console.error("Error al eliminar el dispositivo:", error);
       message.error("Error al eliminar el dispositivo");
     }
+  };
+
+  const onDeleteUpdate = async (deviceId, updateId) => {
+    try {
+      const response = await axios.delete(
+        `https://www.pcexpressbcs.com.mx/api/devices/${deviceId}/updates/${updateId}`
+      );
+
+      if (response.status === 200) {
+        // Actualiza los datos después de eliminar la actualización
+        fetchData();
+        message.success("Actualización eliminada exitosamente");
+      } else {
+        console.error("Error al eliminar la actualización");
+        message.error("Error al eliminar la actualización");
+      }
+    } catch (error) {
+      console.error("Error al eliminar la actualización", error);
+      message.error("Error al eliminar la actualización");
+    }
+  };
+
+  const onDeletetest = async (deviceId, updateId) => {
+    console.log(deviceId, updateId);
   };
 
   const handleCancel = () => {
@@ -307,7 +332,23 @@ const DataTable = ({ onEdit }) => {
         dataIndex: "description",
         key: "description",
       },
-      // Puedes añadir más columnas aquí según tus necesidades
+      {
+        title: "Acción",
+        dataIndex: "action",
+        key: "action",
+        render: (_, update) => (
+          <Space>
+            <Popconfirm
+              title="¿Estás seguro de eliminar este registro?"
+              onConfirm={() => onDeleteUpdate(record.id, update.id)}
+              okText="Sí"
+              cancelText="No"
+            >
+              <Button icon={<DeleteFilled />} type="primary" danger />
+            </Popconfirm>
+          </Space>
+        ),
+      },
     ];
 
     return (
