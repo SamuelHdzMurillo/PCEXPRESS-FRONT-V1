@@ -1,6 +1,5 @@
-import React, { useState } from "react";
-import { Form, Input, Upload, Button, message, Modal } from "antd";
-import { UploadOutlined } from "@ant-design/icons";
+import React from "react";
+import { Form, Input, Button, Modal, message } from "antd";
 import axios from "axios";
 
 const DeviceUpdateForm = ({ deviceId, modalVisible, setModalVisible }) => {
@@ -16,22 +15,13 @@ const DeviceUpdateForm = ({ deviceId, modalVisible, setModalVisible }) => {
 
   const onFinish = async (values) => {
     const { title, description, images } = values;
-    const imagesFormData = new FormData();
-
-    if (images) {
-      images.forEach((image, index) => {
-        imagesFormData.append(`images[${index}]`, image.originFileObj);
-      });
-    }
 
     try {
       const formData = new FormData();
       formData.append("title", title);
       formData.append("description", description);
       formData.append("device_id", deviceId);
-      if (images) {
-        formData.append("images", imagesFormData);
-      }
+      formData.append("images", images[0]); // Accede a la imagen desde el campo 'img'
 
       const response = await axios.post(
         "https://www.pcexpressbcs.com.mx/api/updates",
@@ -45,8 +35,8 @@ const DeviceUpdateForm = ({ deviceId, modalVisible, setModalVisible }) => {
 
       if (response.status === 200) {
         message.success("Datos enviados exitosamente");
-        form.resetFields(); // Limpia el formulario después de enviar los datos.
-        setModalVisible(false); // Cierra el modal después de enviar los datos con éxito.
+        form.resetFields();
+        setModalVisible(false);
       } else {
         console.error("Error al enviar los datos");
         message.error("Error al enviar los datos");
@@ -57,25 +47,9 @@ const DeviceUpdateForm = ({ deviceId, modalVisible, setModalVisible }) => {
     }
   };
 
-  const normFile = (e) => {
-    if (Array.isArray(e)) {
-      return e;
-    }
-    return e && e.fileList;
-  };
-
-  const props = {
-    name: "images",
-    multiple: true,
-    action: "URL_DE_TU_SERVIDOR", // Reemplaza con la URL real de tu servidor.
-    onChange(info) {
-      // No necesitas guardar la lista de archivos en este caso.
-    },
-  };
-
   return (
     <div>
-      <Button onClick={showModal}></Button>
+      <Button onClick={showModal}>Abrir Modal</Button>
       <Modal
         title="Formulario"
         visible={modalVisible}
@@ -102,14 +76,18 @@ const DeviceUpdateForm = ({ deviceId, modalVisible, setModalVisible }) => {
           </Form.Item>
 
           <Form.Item
-            label="Images (OPCIONAL)"
+            label="Imagen"
             name="images"
             valuePropName="fileList"
-            getValueFromEvent={normFile}
+            rules={[{ required: true, message: "Por favor ingrese la imagen" }]}
           >
-            <Upload {...props}>
-              <Button icon={<UploadOutlined />}>Seleccionar Imágenes</Button>
-            </Upload>
+            <input
+              type="file"
+              accept=".jpg, .png, .jpeg , .bmp , .tiff , .tif"
+              onChange={(e) =>
+                form.setFieldsValue({ images: [e.target.files[0]] })
+              }
+            />
           </Form.Item>
 
           <Form.Item name="device_id" hidden initialValue={deviceId}>

@@ -21,7 +21,7 @@ import {
   DeleteFilled,
   EditFilled,
   MessageFilled,
-  PaperClipOutlined
+  PaperClipOutlined,
 } from "@ant-design/icons";
 
 import DeviceForm from "./DeviceForm";
@@ -44,6 +44,7 @@ const DataTable = ({ onEdit }) => {
   const [selectedDeviceId, setSelectedDeviceId] = useState(null); // Nuevo estado para almacenar el ID del dispositivo seleccionado
   const [selectedOption, setSelectedOption] = useState("");
   const [expandedRowKeys, setExpandedRowKeys] = useState([]);
+
   const openForm = () => {
     setIsFormVisible(true);
   };
@@ -283,17 +284,18 @@ const DataTable = ({ onEdit }) => {
       render: (_, record) => (
         <Space size="middle">
           <Tooltip title="Imprimir Ticket">
-          <Button
-            icon={<PrinterFilled />}
-            onClick={() => handlePrint(record)}
-          />
+            <Button
+              icon={<PrinterFilled />}
+              onClick={() => handlePrint(record)}
+            />
           </Tooltip>
-          
-            <Tooltip title="Imprimir Orden de Servicio"><Button
-            icon={<PaperClipOutlined />}
-            onClick={() => handlePrintOrder(record)}
-          /></Tooltip>
-          
+
+          <Tooltip title="Imprimir Orden de Servicio">
+            <Button
+              icon={<PaperClipOutlined />}
+              onClick={() => handlePrintOrder(record)}
+            />
+          </Tooltip>
 
           <Dropdown overlay={smsMenu(record)}>
             <Button icon={<MessageFilled />}></Button>
