@@ -58,6 +58,10 @@ const DataTable = ({ onEdit }) => {
     setIsEditModalOpen(false);
     fetchData();
   };
+  const handleShowImage = (image) => {
+    const imageUrl = `https://www.pcexpressbcs.com.mx/storage/${image}`;
+    window.open(imageUrl);
+  };
 
   const closeForm = () => {
     setIsFormVisible(false);
@@ -343,12 +347,23 @@ const DataTable = ({ onEdit }) => {
         dataIndex: "description",
         key: "description",
       },
+      ,
+      {
+        title: "Fecha",
+        dataIndex: "created_at",
+        key: "created_at",
+        render: (text, record) => (
+          <span>
+            {moment(record.created_at).format("DD/MM/YYYY - HH:mm:ss")}
+          </span>
+        ),
+      },
       {
         title: "Acción",
         dataIndex: "action",
         key: "action",
         render: (_, update) => (
-          <Space>
+          <Space size="middle">
             <Popconfirm
               title="¿Estás seguro de eliminar este registro?"
               onConfirm={() => onDeleteUpdate(record.id, update.id)}
@@ -359,6 +374,22 @@ const DataTable = ({ onEdit }) => {
             </Popconfirm>
           </Space>
         ),
+      },
+      {
+        title: "Acción Imagen",
+        key: "imageAction",
+        render: (_, update) => {
+          return update.images ? ( // Verifica si hay una imagen en esta actualización
+            <Button
+              icon={<PaperClipOutlined />}
+              onClick={() => handleShowImage(update.images)}
+            >
+              Ver Imagen
+            </Button>
+          ) : (
+            <Tag color="red">Sin Imagen </Tag>
+          );
+        },
       },
     ];
 
