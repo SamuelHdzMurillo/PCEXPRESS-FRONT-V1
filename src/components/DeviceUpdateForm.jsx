@@ -21,7 +21,10 @@ const DeviceUpdateForm = ({ deviceId, modalVisible, setModalVisible }) => {
       formData.append("title", title);
       formData.append("description", description);
       formData.append("device_id", deviceId);
-      formData.append("images", images[0]); // Accede a la imagen desde el campo 'img'
+      if (images && images.length > 0) {
+        // Verifica si 'images' está definido y no es vacío
+        formData.append("images", images[0]); // Accede a la imagen desde el campo 'img'
+      } // Accede a la imagen desde el campo 'img'
 
       const response = await axios.post(
         "https://www.pcexpressbcs.com.mx/api/updates",
