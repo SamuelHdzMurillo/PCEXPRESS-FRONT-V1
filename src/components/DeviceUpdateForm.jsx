@@ -79,7 +79,9 @@ const DeviceUpdateForm = ({ deviceId, modalVisible, setModalVisible }) => {
             label="Imagen"
             name="images"
             valuePropName="fileList"
-            rules={[{ required: true, message: "Por favor ingrese la imagen" }]}
+            rules={[
+              { required: false, message: "Por favor ingrese la imagen" },
+            ]}
           >
             <input
               type="file"
