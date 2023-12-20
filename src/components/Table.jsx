@@ -164,20 +164,35 @@ const DataTable = ({ onEdit }) => {
     fetchData(); // Abre el modal de actualización
   };
 
+  
+
+  const confirmSendMessage = (deviceId, status) => {
+    Modal.confirm({
+      title: '¿Estás seguro de enviar este mensaje?',
+      content: 'Esta acción enviará el mensaje. ¿Estás seguro?',
+      okText: 'Sí',
+      cancelText: 'Cancelar',
+      onOk() {
+        handleStatusChange(deviceId, status);
+      },
+    });
+  };
+  
+
   const smsMenu = (record) => (
     <Menu>
       <Menu.Item key="en_proceso">
-        <a onClick={() => handleStatusChange(record.id, "in-progress")}>
+        <a onClick={() => confirmSendMessage(record.id, "in-progress")}>
           En proceso
         </a>
       </Menu.Item>
       <Menu.Item key="recibido">
-        <a onClick={() => handleStatusChange(record.id, "received")}>
+        <a onClick={() => confirmSendMessage(record.id, "received")}>
           Recibido
         </a>
       </Menu.Item>
       <Menu.Item key="terminado">
-        <a onClick={() => handleStatusChange(record.id, "completed")}>
+        <a onClick={() => confirmSendMessage(record.id, "completed")}>
           Terminado
         </a>
       </Menu.Item>
